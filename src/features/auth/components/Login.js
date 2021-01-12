@@ -2,7 +2,7 @@ import React from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import hash from "object-hash";
 
 import Logo from "../../components/Logo";
@@ -56,7 +56,6 @@ const validationSchema = Yup.object().shape({
 
 const Login = () => {
   const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
   const formik = useFormik({
     initialValues: {
       password: "",
