@@ -5,10 +5,7 @@ export const signup = (payload, meta) => {
   return async (dispatch) => {
     dispatch(signupRequest);
     try {
-      const response = await request.post(
-        `${process.env.REACT_APP_DEVELOPSIO_API}/auth/login`,
-        payload
-      );
+      const response = await request.post(`/auth/login`, payload);
       const token = response.data;
       localStorage.setItem("token", token);
       dispatch(signupSuccess());
