@@ -1,13 +1,23 @@
 import React from "react";
+import { Router, Switch, Route } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
 
-import request from "./http";
+import history from "./routing/history";
+import GlobalStyle from "./GlobalStyle";
+import defaultTheme from "./themes/defaultTheme";
+import Login from "./features/auth/components/Login";
 
 function App() {
-  React.useEffect(() => {
-    request.get("/healthCheck");
-  }, []);
-
-  return <div>App</div>;
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <GlobalStyle />
+      <Router history={history}>
+        <Switch>
+          <Route path="/login" component={Login} />
+        </Switch>
+      </Router>
+    </ThemeProvider>
+  );
 }
 
 export default App;

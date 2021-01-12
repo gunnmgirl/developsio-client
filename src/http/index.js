@@ -2,7 +2,7 @@ import axios from "axios";
 import history from "../routing/history";
 
 const instance = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: process.env.REACT_APP_DEVELOPSIO_API,
 });
 
 instance.interceptors.request.use(
@@ -33,5 +33,8 @@ export default {
     return instance.get(path, {
       params,
     });
+  },
+  post(path, data) {
+    return instance.post(path, data);
   },
 };
