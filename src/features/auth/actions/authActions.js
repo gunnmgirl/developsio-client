@@ -1,4 +1,5 @@
 import request from "../../../http";
+import history from "../../../routing/history";
 
 export const signup = (payload, meta) => {
   const { formik } = meta;
@@ -9,6 +10,7 @@ export const signup = (payload, meta) => {
       const token = response.data;
       localStorage.setItem("token", token);
       dispatch(signupSuccess());
+      history.push("/people");
     } catch (error) {
       formik.setFieldError("password", error.data);
       dispatch(signupFailure);
