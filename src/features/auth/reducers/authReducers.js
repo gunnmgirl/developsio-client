@@ -6,21 +6,21 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "SIGNUP_FAILURE":
+    case "LOGIN_FAILURE":
       return {
         ...state,
         loading: false,
         error: true,
         isLoggedIn: false,
       };
-    case "SIGNUP_SUCCESS":
+    case "LOGIN_SUCCESS":
       return {
         ...state,
         loading: false,
         error: false,
         isLoggedIn: true,
       };
-    case "SIGNUP_REQUEST":
+    case "LOGIN_REQUEST":
       return {
         ...state,
         loading: true,

@@ -10,7 +10,7 @@ import FormControl from "../../../components/FormControl";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import image from "../../../images/loginBackground.png";
-import { signup } from "../actions/authActions";
+import { login } from "../actions/authActions";
 
 const MainContainer = styled.div`
   min-height: 100vh;
@@ -64,7 +64,7 @@ const Login = () => {
     onSubmit: (values) => {
       const hashedPassword = hash(values.password);
       dispatch(
-        signup({ email: values.email, password: hashedPassword }, { formik })
+        login({ email: values.email, password: hashedPassword }, { formik })
       );
     },
     validationSchema,
