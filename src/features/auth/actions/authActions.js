@@ -1,38 +1,43 @@
 import request from "../../../http";
 import history from "../../../routing/history";
+import notify from "../../../notifications";
 
-export const signup = (payload, meta) => {
+export const login = (payload, meta) => {
   const { formik } = meta;
   return async (dispatch) => {
-    dispatch(signupRequest);
+    dispatch(loginRequest);
     try {
       const response = await request.post(`/auth/login`, payload);
       const token = response.data;
       localStorage.setItem("token", token);
-      dispatch(signupSuccess());
+      dispatch(loginSuccess());
       history.push("/people");
     } catch (error) {
-      formik.setFieldError("password", error.data);
-      dispatch(signupFailure);
+      if (!error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        formik.setFieldError("password", error.data);
+      }
+      dispatch(loginFailure);
     }
   };
 };
 
-const signupRequest = () => {
+const loginRequest = () => {
   return {
-    type: "SIGNUP_REQUEST",
+    type: "LOGIN_REQUEST",
   };
 };
 
-const signupFailure = () => {
+const loginFailure = () => {
   return {
-    type: "SIGNUP_FAILURE",
+    type: "LOGIN_FAILURE",
   };
 };
 
-const signupSuccess = (payload) => {
+const loginSuccess = (payload) => {
   return {
-    type: "SIGNUP_SUCCESS",
+    type: "LOGIN_SUCCESS",
     payload,
   };
 };
