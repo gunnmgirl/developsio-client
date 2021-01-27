@@ -12,8 +12,10 @@ import People from "./features/people/components/People";
 import Notes from "./features/notes/components/Notes";
 import Positions from "./features/positions/components/Positions";
 import Header from "./features/components/Header";
+import { useSelector } from "react-redux";
 
 function App() {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyle />
@@ -26,14 +28,21 @@ function App() {
         draggable
       />
       <Router history={history}>
-        <Switch>
-          <Route path="/" exact component={Login} />
-          <Route path="/login" component={Login} />
-          <Header />
-          <Route path="/people" component={People} />
-          <Route path="/notes" component={Notes} />
-          <Route path="/positions" component={Positions} />
-        </Switch>
+        {isLoggedIn ? (
+          <>
+            <Header />
+            <Switch>
+              <Route path="/people" component={People} />
+              <Route path="/notes" component={Notes} />
+              <Route path="/positions" component={Positions} />
+            </Switch>
+          </>
+        ) : (
+          <Switch>
+            <Route path="/" exact component={Login} />
+            <Route path="/login" component={Login} />
+          </Switch>
+        )}
       </Router>
     </ThemeProvider>
   );
