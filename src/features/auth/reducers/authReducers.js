@@ -26,6 +26,8 @@ export default (state = INITIAL_STATE, action) => {
         loading: true,
         error: false,
       };
+    case "LOGOUT":
+      return INITIAL_STATE;
     default:
       return { ...state };
   }

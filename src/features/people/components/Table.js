@@ -21,7 +21,7 @@ const DataRow = styled.div`
   border: 1px solid ${(props) => props.theme.onPrimary};
   border-left: 0;
   border-right: 0;
-  background-color: ${(props) => props.theme.quaternary};
+  background-color: ${(props) => props.theme.secondaryLight};
   margin: 1rem 0;
   padding: 0 2rem;
   min-height: 3rem;
