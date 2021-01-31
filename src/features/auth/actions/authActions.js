@@ -8,9 +8,9 @@ export const login = (payload, meta) => {
     dispatch(loginRequest);
     try {
       const response = await request.post(`/auth/login`, payload);
-      const token = response.data;
+      const { token, me } = response.data;
       localStorage.setItem("token", token);
-      dispatch(loginSuccess());
+      dispatch(loginSuccess(me));
       history.push("/people");
     } catch (error) {
       if (!error.data) {

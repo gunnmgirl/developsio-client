@@ -1,9 +1,8 @@
 import React from "react";
-import { Users, Book, Monitor, ChevronsDown } from "react-feather";
+import { Users, Book, Monitor, ChevronDown } from "react-feather";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ChevronDown } from "react-feather";
 import { Popover } from "@malcodeman/react-popover";
 
 import { logout } from "../auth/actions/authActions";
@@ -82,7 +81,7 @@ const PopoverItem = styled.div`
 `;
 
 const Header = () => {
-  const imageUrl = useSelector((state) => state.people.imageUrl);
+  const imageUrl = useSelector((state) => state.auth.me.imageUrl);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = React.useState(false);
 
