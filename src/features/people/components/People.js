@@ -27,7 +27,10 @@ const People = () => {
 
   const columns = React.useMemo(
     () => [
-      { Header: "", accessor: "imageUrl" },
+      {
+        Header: "",
+        accessor: "imageUrl",
+      },
       {
         Header: "Full Name",
         accessor: "name",

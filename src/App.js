@@ -2,6 +2,7 @@ import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { ToastContainer } from "react-toastify";
+import { useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 
 import history from "./routing/history";
@@ -12,7 +13,6 @@ import People from "./features/people/components/People";
 import Notes from "./features/notes/components/Notes";
 import Positions from "./features/positions/components/Positions";
 import Header from "./features/components/Header";
-import { useSelector } from "react-redux";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);

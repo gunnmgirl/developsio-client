@@ -19,6 +19,7 @@ export default (state = INITIAL_STATE, action) => {
         loading: false,
         error: false,
         isLoggedIn: true,
+        me: action.payload,
       };
     case "LOGIN_REQUEST":
       return {
