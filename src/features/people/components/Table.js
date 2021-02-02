@@ -37,7 +37,9 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-const Body = styled.div``;
+const Body = styled.div`
+  color: ${(props) => props.theme.secondary};
+`;
 
 const Header = styled.div``;
 
