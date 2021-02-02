@@ -22,8 +22,9 @@ const ProfileImage = styled.div`
 
 const People = () => {
   const dispatch = useDispatch();
-  const page = useSelector((state) => state.people.page);
   const people = useSelector((state) => state.people.people);
+  const totalCount = useSelector((state) => state.people.totalCount);
+  const [page, setPage] = React.useState(0);
 
   const columns = React.useMemo(
     () => [
@@ -68,13 +69,22 @@ const People = () => {
     });
   });
 
+  const handleSetPage = (newPage) => {
+    setPage(newPage);
+  };
+
   React.useEffect(() => {
     dispatch(getApplicants({ page }));
   }, [page]);
 
   return (
     <div>
-      <Table data={data} columns={columns} />
+      <Table
+        data={data}
+        columns={columns}
+        handleSetPage={handleSetPage}
+        totalCount={totalCount}
+      />
     </div>
   );
 };

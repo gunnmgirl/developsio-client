@@ -3,6 +3,7 @@ const INITIAL_STATE = {
   error: false,
   people: [],
   page: 0,
+  totalCount: 0,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -18,7 +19,9 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         error: false,
-        people: action.payload,
+        people: action.payload.applicants,
+        totalCount: action.payload.count.count,
+        limit: action.payload.limit,
       };
     case "GET_APPLICANTS_REQUEST":
       return {

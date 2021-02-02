@@ -1,6 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { useTable, useFlexLayout, usePagination } from "react-table";
+import { ArrowLeftCircle, ArrowRightCircle } from "react-feather";
 
 const Container = styled.div`
   height: 100%;
@@ -9,6 +11,30 @@ const Container = styled.div`
 const Head = styled.div`
   margin: 2rem 0;
   padding: 0 2rem;
+`;
+
+const PageWrapper = styled.div`
+  background-color: ${(props) => props.theme.secondary};
+  color: ${(props) => props.theme.primary};
+  font-size: 1rem;
+  border-radius: 999px;
+  height: 1.6rem;
+  width: 1.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const IconWrapper = styled.div`
+  color: ${(props) =>
+    props.disabled ? props.theme.secondaryLight : props.theme.secondary};
+  margin: 0.6rem 0.4rem;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Body = styled.div``;
@@ -29,21 +55,34 @@ const DataRow = styled.div`
 `;
 
 function Table(props) {
-  const { columns, data } = props;
+  const { columns, data, handleSetPage, totalCount } = props;
+  const limit = useSelector((state) => state.people.limit);
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     page,
+    nextPage,
+    previousPage,
+    canPreviousPage,
+    canNextPage,
     prepareRow,
+    state: { pageIndex },
   } = useTable(
     {
       columns,
       data,
+      pageCount: Math.ceil(totalCount / limit),
+      manualPagination: true,
+      initialState: { pageIndex: 0 },
     },
     useFlexLayout,
     usePagination
   );
+
+  React.useEffect(() => {
+    handleSetPage(pageIndex);
+  }, [pageIndex]);
 
   return (
     <Container>
@@ -77,6 +116,18 @@ function Table(props) {
             );
           })}
         </Body>
+        <Wrapper>
+          <IconWrapper
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+          >
+            <ArrowLeftCircle />
+          </IconWrapper>
+          <PageWrapper>{`${pageIndex + 1}`}</PageWrapper>
+          <IconWrapper onClick={() => nextPage()} disabled={!canNextPage}>
+            <ArrowRightCircle />
+          </IconWrapper>
+        </Wrapper>
       </div>
     </Container>
   );
