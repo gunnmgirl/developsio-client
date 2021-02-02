@@ -119,7 +119,11 @@ const Header = () => {
       </Wrapper>
       <Wrapper>
         <AdminImage imageUrl={imageUrl}></AdminImage>
-        <Popover isOpen={isOpen} content={getPopoverContent}>
+        <Popover
+          isOpen={isOpen}
+          content={getPopoverContent}
+          onClickOutside={() => setIsOpen(false)}
+        >
           <StyledChevronDown onClick={() => setIsOpen(!isOpen)} />
         </Popover>
       </Wrapper>
