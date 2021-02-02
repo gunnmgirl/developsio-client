@@ -1,7 +1,8 @@
 const defaultTheme = {
   primary: "#ffffff",
   onPrimary: "#000000",
-  secondary: "#ff721c", //orange
+  secondary: "#ff8e47", //orange
+  secondaryText: "#736d6d",
   secondaryLight: "#fff4ed", //orange light
   onSecondary: "#ffffff",
   onActive: "#ff721c",
