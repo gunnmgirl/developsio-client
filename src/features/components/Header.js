@@ -26,7 +26,7 @@ const MainContainer = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 6rem;
-  height: 4rem;
+  min-height: 4rem;
   background: ${(props) => props.theme.secondaryLight};
   align-items: center;
 `;

@@ -9,6 +9,10 @@ import { getApplicants } from "../actions/peopleActions";
 import { getPositions } from "../../positions/actions/positionsActions";
 import Table from "./Table";
 
+const MainContainer = styled.div`
+  flex-grow: 1;
+`;
+
 const ProfileImage = styled.div`
   height: 2.6rem;
   width: 2.6rem;
@@ -195,7 +199,7 @@ const People = () => {
   }, [page, order, filter]);
 
   return (
-    <div>
+    <MainContainer>
       <Wrapper>
         <StyledTotalCount>{`${totalCount} Total`}</StyledTotalCount>
         <Container>
@@ -236,7 +240,7 @@ const People = () => {
         handleSetPage={handleSetPage}
         totalCount={totalCount}
       />
-    </div>
+    </MainContainer>
   );
 };
 
