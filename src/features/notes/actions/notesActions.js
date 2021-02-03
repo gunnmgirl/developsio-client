@@ -39,3 +39,39 @@ const getNotesSuccess = (payload) => {
     payload,
   };
 };
+
+export const addNote = (payload) => {
+  return async (dispatch) => {
+    dispatch(addNoteRequest());
+    try {
+      const response = await request.post(`/note/`, payload);
+      dispatch(addNoteSuccess(response.data));
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        notify(error.data, "error");
+      }
+      dispatch(addNoteFailure());
+    }
+  };
+};
+
+const addNoteRequest = () => {
+  return {
+    type: "ADD_NOTE_REQUEST",
+  };
+};
+
+const addNoteFailure = () => {
+  return {
+    type: "ADD_NOTE_FAILURE",
+  };
+};
+
+const addNoteSuccess = (payload) => {
+  return {
+    type: "ADD_NOTE_SUCCESS",
+    payload,
+  };
+};
