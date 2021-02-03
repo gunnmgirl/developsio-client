@@ -3,12 +3,11 @@ import notify from "../../../notifications";
 import { NOTES_LIMIT } from "../constants";
 
 export const getNotes = (payload) => {
-  const { page } = payload;
   payload.limit = NOTES_LIMIT;
   return async (dispatch) => {
     dispatch(getNotesRequest());
     try {
-      const response = await request.get(`/note/${page}`, payload);
+      const response = await request.get(`/note/`, payload);
       response.data.limit = NOTES_LIMIT;
       dispatch(getNotesSuccess(response.data));
     } catch (error) {
