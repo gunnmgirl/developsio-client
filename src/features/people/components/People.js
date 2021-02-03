@@ -3,10 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import format from "date-fns/format";
 import styled from "styled-components";
 import { Popover } from "@malcodeman/react-popover";
+import { ChevronDown, AlignCenter } from "react-feather";
 
 import { getApplicants } from "../actions/peopleActions";
+import { getPositions } from "../../positions/actions/positionsActions";
 import Table from "./Table";
-import { ChevronDown } from "react-feather";
 
 const ProfileImage = styled.div`
   height: 2.6rem;
@@ -37,6 +38,7 @@ const StyledTotalCount = styled.span`
 const StyledSort = styled.div`
   display: flex;
   align-items: center;
+  margin: 0 2rem;
 `;
 
 const PopoverMainContainer = styled.div`
@@ -56,17 +58,36 @@ const PopoverItem = styled.div`
   cursor: pointer;
 `;
 
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledAlignCenter = styled(AlignCenter)`
+  size: 1rem;
+  margin-right: 0.6rem;
+`;
+
 const StyledSpan = styled.span`
   color: ${(props) => props.theme.secondary};
   margin-right: 0.4rem;
+`;
+
+const StyledFilter = styled(StyledSort)`
+  padding: 0.6rem 0.6rem;
+  border: 2px solid ${(props) => props.theme.secondary};
+  border-radius: 6px;
+  color: ${(props) => props.theme.secondaryText};
 `;
 
 const People = () => {
   const dispatch = useDispatch();
   const people = useSelector((state) => state.people.people);
   const totalCount = useSelector((state) => state.people.totalCount);
+  const positions = useSelector((state) => state.positions.positions);
   const [page, setPage] = React.useState(0);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isFilterOpen, setIsFilterOpen] = React.useState(false);
 
   const sortBy = [
     { name: "Oldest", value: "ASC" },
@@ -74,6 +95,7 @@ const People = () => {
   ];
 
   const [order, setOrder] = React.useState(sortBy[0]);
+  const [filter, setFilter] = React.useState(null);
 
   const columns = React.useMemo(
     () => [
@@ -125,31 +147,88 @@ const People = () => {
   const getPopoverContent = () => {
     return (
       <PopoverMainContainer>
-        <PopoverItem onClick={() => setOrder(sortBy[0])}>Oldest</PopoverItem>
-        <PopoverItem onClick={() => setOrder(sortBy[1])}>Latest</PopoverItem>
+        <PopoverItem
+          onClick={() => {
+            setOrder(sortBy[0]);
+            setIsOpen(false);
+          }}
+        >
+          Oldest
+        </PopoverItem>
+        <PopoverItem
+          onClick={() => {
+            setOrder(sortBy[1]);
+            setIsOpen(false);
+          }}
+        >
+          Latest
+        </PopoverItem>
+      </PopoverMainContainer>
+    );
+  };
+
+  const getFilterPopoverContent = () => {
+    return (
+      <PopoverMainContainer>
+        {positions
+          ? positions.map((position) => (
+              <PopoverItem
+                onClick={() => {
+                  if (position.name === `All Positions`) {
+                    setFilter(null);
+                  } else {
+                    setFilter(position.name);
+                  }
+                  setIsFilterOpen(false);
+                }}
+              >
+                {position.name}
+              </PopoverItem>
+            ))
+          : null}
       </PopoverMainContainer>
     );
   };
 
   React.useEffect(() => {
-    dispatch(getApplicants({ page, order: order.value }));
-  }, [page, order]);
+    dispatch(getApplicants({ page, order: order.value, filter }));
+  }, [page, order, filter]);
 
   return (
     <div>
       <Wrapper>
         <StyledTotalCount>{`${totalCount} Total`}</StyledTotalCount>
-        <StyledSort>
-          <StyledSpan>{`Sort by: `}</StyledSpan>
-          <span>{order.name}</span>
+        <Container>
+          <Popover
+            isOpen={isFilterOpen}
+            content={getFilterPopoverContent}
+            onClickOutside={() => setIsFilterOpen(false)}
+          >
+            <StyledFilter
+              onClick={() => {
+                if (!positions || !positions.length) {
+                  dispatch(getPositions());
+                }
+                setIsFilterOpen(!isFilterOpen);
+              }}
+            >
+              <StyledAlignCenter />
+              <span>{!filter ? `All Positions` : `${filter}`}</span>
+              <ChevronDown size="1rem" />
+            </StyledFilter>
+          </Popover>
           <Popover
             isOpen={isOpen}
             content={getPopoverContent}
             onClickOutside={() => setIsOpen(false)}
           >
-            <ChevronDown size="1rem" onClick={() => setIsOpen(!isOpen)} />
+            <StyledSort onClick={() => setIsOpen(!isOpen)}>
+              <StyledSpan>{`Sort by: `}</StyledSpan>
+              <span>{order.name}</span>
+              <ChevronDown size="1rem" />
+            </StyledSort>
           </Popover>
-        </StyledSort>
+        </Container>
       </Wrapper>
       <Table
         data={data}
