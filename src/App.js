@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { ToastContainer } from "react-toastify";
@@ -13,6 +14,12 @@ import People from "./features/people/components/People";
 import Notes from "./features/notes/components/Notes";
 import Positions from "./features/positions/components/Positions";
 import Header from "./features/components/Header";
+
+const Container = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -29,14 +36,14 @@ function App() {
       />
       <Router history={history}>
         {isLoggedIn ? (
-          <>
+          <Container>
             <Header />
             <Switch>
               <Route path="/people" component={People} />
               <Route path="/notes" component={Notes} />
               <Route path="/positions" component={Positions} />
             </Switch>
-          </>
+          </Container>
         ) : (
           <Switch>
             <Route path="/" exact component={Login} />
