@@ -28,6 +28,26 @@ export default (state = INITIAL_STATE, action) => {
         loading: true,
         error: false,
       };
+    case "ADD_NOTE_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "ADD_NOTE_SUCCESS":
+      const newNotes = state.notes.slice(0, -1);
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        notes: [action.payload, ...newNotes],
+      };
+    case "ADD_NOTE_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
     default:
       return { ...state };
   }
