@@ -43,6 +43,7 @@ const StyledSort = styled.div`
   display: flex;
   align-items: center;
   margin: 0 2rem;
+  cursor: pointer;
 `;
 
 const PopoverMainContainer = styled.div`
@@ -78,10 +79,11 @@ const StyledSpan = styled.span`
 `;
 
 const StyledFilter = styled(StyledSort)`
-  padding: 0.6rem 0.6rem;
+  padding: 0.4rem 0.6rem;
   border: 2px solid ${(props) => props.theme.secondary};
   border-radius: 6px;
   color: ${(props) => props.theme.secondaryText};
+  cursor: pointer;
 `;
 
 const People = () => {
@@ -94,8 +96,8 @@ const People = () => {
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
 
   const sortBy = [
-    { name: "Oldest", value: "ASC" },
     { name: "Latest", value: "DESC" },
+    { name: "Oldest", value: "ASC" },
   ];
 
   const [order, setOrder] = React.useState(sortBy[0]);
@@ -157,7 +159,7 @@ const People = () => {
             setIsOpen(false);
           }}
         >
-          Oldest
+          Latest
         </PopoverItem>
         <PopoverItem
           onClick={() => {
@@ -165,7 +167,7 @@ const People = () => {
             setIsOpen(false);
           }}
         >
-          Latest
+          Oldest
         </PopoverItem>
       </PopoverMainContainer>
     );
