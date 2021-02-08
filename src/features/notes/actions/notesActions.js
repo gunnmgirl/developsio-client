@@ -75,3 +75,39 @@ const addNoteSuccess = (payload) => {
     payload,
   };
 };
+
+export const editNote = (payload) => {
+  return async (dispatch) => {
+    dispatch(editNoteRequest());
+    try {
+      const response = await request.post(`/note/edit`, payload);
+      dispatch(editNoteSuccess(response.data));
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        notify(error.data, "error");
+      }
+      dispatch(editNoteFailure());
+    }
+  };
+};
+
+const editNoteRequest = () => {
+  return {
+    type: "EDIT_NOTE_REQUEST",
+  };
+};
+
+const editNoteFailure = () => {
+  return {
+    type: "EDIT_NOTE_FAILURE",
+  };
+};
+
+const editNoteSuccess = (payload) => {
+  return {
+    type: "EDIT_NOTE_SUCCESS",
+    payload,
+  };
+};

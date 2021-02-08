@@ -48,6 +48,34 @@ export default (state = INITIAL_STATE, action) => {
         loading: true,
         error: false,
       };
+    case "EDIT_NOTE_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "EDIT_NOTE_SUCCESS":
+      const { title, id, body, isPrivate, updatedAt } = action.payload;
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        notes: state.notes.map((note) => {
+          if (note.id === id) {
+            note.title = title;
+            note.body = body;
+            note.updatedAt = updatedAt;
+            note.isPrivate = isPrivate;
+          }
+          return note;
+        }),
+      };
+    case "EDIT_NOTE_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
     default:
       return { ...state };
   }
