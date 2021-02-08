@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { useTable, useFlexLayout, usePagination } from "react-table";
 import { ArrowLeftCircle, ArrowRightCircle } from "react-feather";
+import Spinner from "../../components/Spinner";
 
 const Container = styled.div`
   height: 100%;
@@ -59,6 +60,7 @@ const DataRow = styled.div`
 function Table(props) {
   const { columns, data, handleSetPage, totalCount } = props;
   const limit = useSelector((state) => state.people.limit);
+  const loading = useSelector((state) => state.people.loading);
   const {
     getTableProps,
     getTableBodyProps,
@@ -88,49 +90,53 @@ function Table(props) {
 
   return (
     <Container>
-      <div {...getTableProps()}>
-        <Head>
-          {headerGroups.map((headerGroup) => (
-            <div {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <Header {...column.getHeaderProps()}>
-                  {column.render("Header")}
-                </Header>
-              ))}
-            </div>
-          ))}
-        </Head>
-        <Body {...getTableBodyProps()}>
-          {page.map((row) => {
-            prepareRow(row);
-            return (
-              <DataRow {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <>
-                      <Data {...cell.getCellProps()}>
-                        {cell.render("Cell")}
-                      </Data>
-                    </>
-                  );
-                })}
-              </DataRow>
-            );
-          })}
-        </Body>
-        <Wrapper>
-          <IconWrapper
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-          >
-            <ArrowLeftCircle />
-          </IconWrapper>
-          <PageWrapper>{`${pageIndex + 1}`}</PageWrapper>
-          <IconWrapper onClick={() => nextPage()} disabled={!canNextPage}>
-            <ArrowRightCircle />
-          </IconWrapper>
-        </Wrapper>
-      </div>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div {...getTableProps()}>
+          <Head>
+            {headerGroups.map((headerGroup) => (
+              <div {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <Header {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                  </Header>
+                ))}
+              </div>
+            ))}
+          </Head>
+          <Body {...getTableBodyProps()}>
+            {page.map((row) => {
+              prepareRow(row);
+              return (
+                <DataRow {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <>
+                        <Data {...cell.getCellProps()}>
+                          {cell.render("Cell")}
+                        </Data>
+                      </>
+                    );
+                  })}
+                </DataRow>
+              );
+            })}
+          </Body>
+          <Wrapper>
+            <IconWrapper
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+            >
+              <ArrowLeftCircle />
+            </IconWrapper>
+            <PageWrapper>{`${pageIndex + 1}`}</PageWrapper>
+            <IconWrapper onClick={() => nextPage()} disabled={!canNextPage}>
+              <ArrowRightCircle />
+            </IconWrapper>
+          </Wrapper>
+        </div>
+      )}
     </Container>
   );
 }
