@@ -6,6 +6,7 @@ import { ArrowLeftCircle, ArrowRightCircle, PlusCircle } from "react-feather";
 import { getNotes } from "../actions/notesActions";
 import NoteItem from "./NoteItem";
 import AddNoteModal from "./AddNoteModal";
+import Spinner from "../../components/Spinner";
 
 const MainContainer = styled.div`
   flex-grow: 1;
@@ -67,6 +68,7 @@ const Notes = () => {
   const notes = useSelector((state) => state.notes.notes);
   const limit = useSelector((state) => state.notes.limit);
   const totalCount = useSelector((state) => state.notes.totalCount);
+  const loading = useSelector((state) => state.notes.loading);
   const [page, setPage] = React.useState(0);
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -88,30 +90,36 @@ const Notes = () => {
 
   return (
     <MainContainer>
-      <RowContainer>
-        <Wrapper onClick={() => setIsOpen(!isOpen)}>
-          <StyledPlusCircle />
-          <StyledSpan>Add New Note</StyledSpan>
-        </Wrapper>
-      </RowContainer>
-      <Container>
-        {notes.map((note) => (
-          <NoteItem note={note} />
-        ))}
-      </Container>
-      <Wrapper>
-        <IconWrapper onClick={() => previousPage()} disabled={page < 1}>
-          <ArrowLeftCircle />
-        </IconWrapper>
-        <PageWrapper>{`${page + 1}`}</PageWrapper>
-        <IconWrapper
-          onClick={() => nextPage()}
-          disabled={!(page < Math.floor(totalCount / limit))}
-        >
-          <ArrowRightCircle />
-        </IconWrapper>
-      </Wrapper>
-      <AddNoteModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <RowContainer>
+            <Wrapper onClick={() => setIsOpen(!isOpen)}>
+              <StyledPlusCircle />
+              <StyledSpan>Add New Note</StyledSpan>
+            </Wrapper>
+          </RowContainer>
+          <Container>
+            {notes.map((note) => (
+              <NoteItem note={note} />
+            ))}
+          </Container>
+          <Wrapper>
+            <IconWrapper onClick={() => previousPage()} disabled={page < 1}>
+              <ArrowLeftCircle />
+            </IconWrapper>
+            <PageWrapper>{`${page + 1}`}</PageWrapper>
+            <IconWrapper
+              onClick={() => nextPage()}
+              disabled={!(page < Math.floor(totalCount / limit))}
+            >
+              <ArrowRightCircle />
+            </IconWrapper>
+          </Wrapper>
+          <AddNoteModal isOpen={isOpen} setIsOpen={setIsOpen} />
+        </>
+      )}
     </MainContainer>
   );
 };
