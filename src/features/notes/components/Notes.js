@@ -6,6 +6,7 @@ import { ArrowLeftCircle, ArrowRightCircle } from "react-feather";
 import { getNotes } from "../actions/notesActions";
 
 import NoteItem from "./NoteItem";
+import Spinner from "../../components/Spinner";
 
 const MainContainer = styled.div`
   flex-grow: 1;
@@ -49,6 +50,7 @@ const Notes = () => {
   const notes = useSelector((state) => state.notes.notes);
   const limit = useSelector((state) => state.notes.limit);
   const totalCount = useSelector((state) => state.notes.totalCount);
+  const loading = useSelector((state) => state.notes.loading);
   const [page, setPage] = React.useState(0);
 
   const previousPage = () => {
@@ -69,23 +71,29 @@ const Notes = () => {
 
   return (
     <MainContainer>
-      <Container>
-        {notes.map((note) => (
-          <NoteItem note={note} />
-        ))}
-      </Container>
-      <Wrapper>
-        <IconWrapper onClick={() => previousPage()} disabled={page < 1}>
-          <ArrowLeftCircle />
-        </IconWrapper>
-        <PageWrapper>{`${page + 1}`}</PageWrapper>
-        <IconWrapper
-          onClick={() => nextPage()}
-          disabled={page >= Math.floor(totalCount / limit)}
-        >
-          <ArrowRightCircle />
-        </IconWrapper>
-      </Wrapper>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Container>
+            {notes.map((note) => (
+              <NoteItem note={note} />
+            ))}
+          </Container>
+          <Wrapper>
+            <IconWrapper onClick={() => previousPage()} disabled={page < 1}>
+              <ArrowLeftCircle />
+            </IconWrapper>
+            <PageWrapper>{`${page + 1}`}</PageWrapper>
+            <IconWrapper
+              onClick={() => nextPage()}
+              disabled={page >= Math.floor(totalCount / limit)}
+            >
+              <ArrowRightCircle />
+            </IconWrapper>
+          </Wrapper>
+        </>
+      )}
     </MainContainer>
   );
 };
