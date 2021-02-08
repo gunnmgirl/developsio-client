@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Modal } from "@malcodeman/react-modal";
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import { addNote } from "../actions/notesActions";
+import { addNote, editNote } from "../actions/notesActions";
 import FormControl from "../../../components/FormControl";
 import Input from "../../../components/Input";
 import Textarea from "../../../components/Textarea";
@@ -75,17 +75,33 @@ const validationSchema = Yup.object().shape({
   title: Yup.string().required("Title is required!"),
 });
 
-const AddNoteModal = ({ isOpen, setIsOpen }) => {
+const AddNoteModal = ({
+  isOpen,
+  setIsOpen,
+  initialValues,
+  isEdit = false,
+  noteId,
+  noteCreator,
+  activeButtonText = "Add Note",
+  cancelButtonText = "Cancle",
+}) => {
+  const emptyState = {};
   const dispatch = useDispatch();
+  const myId = useSelector((state) => state.auth.me.id);
+  const disabled = isEdit && myId !== noteCreator;
   const formik = useFormik({
-    initialValues: {
-      title: "",
-      body: "",
-      isPrivate: 1,
-    },
+    initialValues: initialValues || emptyState,
     onSubmit: (values, { resetForm }) => {
-      dispatch(addNote(values));
-      resetForm({});
+      if (isEdit && myId !== noteCreator) {
+        return;
+      }
+      if (isEdit) {
+        values.noteId = noteId;
+        dispatch(editNote(values));
+      } else {
+        dispatch(addNote(values));
+      }
+      resetForm(emptyState);
       setIsOpen(false);
     },
     validationSchema,
@@ -96,7 +112,7 @@ const AddNoteModal = ({ isOpen, setIsOpen }) => {
       isOpen={isOpen}
       onClose={() => {
         setIsOpen(false);
-        formik.resetForm({});
+        formik.resetForm(emptyState);
       }}
     >
       <ModalMainContainer>
@@ -109,6 +125,8 @@ const AddNoteModal = ({ isOpen, setIsOpen }) => {
               name="title"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              value={formik.values.title}
+              disabled={disabled}
             />
           </FormControl>
           <FormControl label="Note">
@@ -118,6 +136,8 @@ const AddNoteModal = ({ isOpen, setIsOpen }) => {
               onBlur={formik.handleBlur}
               resize="0"
               placeholder="Write Your Note Here"
+              value={formik.values.body}
+              disabled={disabled}
             />
           </FormControl>
           <WrapperRadio>
@@ -125,13 +145,16 @@ const AddNoteModal = ({ isOpen, setIsOpen }) => {
               type="radio"
               name="isPrivate"
               onChange={() => formik.setFieldValue("isPrivate", 1)}
-              checked
+              checked={formik.values.isPrivate}
+              disabled={disabled}
             />
             <StyledLabel>Private</StyledLabel>
             <StyledInput
               type="radio"
               name="isPrivate"
               onChange={() => formik.setFieldValue("isPrivate", 0)}
+              checked={!formik.values.isPrivate}
+              disabled={disabled}
             />
             <StyledLabel>Shared</StyledLabel>
           </WrapperRadio>
@@ -139,14 +162,16 @@ const AddNoteModal = ({ isOpen, setIsOpen }) => {
             <StyledButton
               onClick={() => {
                 setIsOpen(false);
-                formik.resetForm({});
+                formik.resetForm(emptyState);
               }}
             >
-              Cancel
+              {cancelButtonText}
             </StyledButton>
-            <StyledActiveButton onClick={() => formik.handleSubmit()}>
-              Add Note
-            </StyledActiveButton>
+            {!disabled && (
+              <StyledActiveButton onClick={() => formik.handleSubmit()}>
+                {activeButtonText}
+              </StyledActiveButton>
+            )}
           </WrapperButtons>
         </StyledForm>
       </ModalMainContainer>

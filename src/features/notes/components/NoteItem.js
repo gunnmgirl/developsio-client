@@ -3,6 +3,8 @@ import styled from "styled-components";
 import format from "date-fns/format";
 import { FileText } from "react-feather";
 
+import AddNoteModal from "./AddNoteModal";
+
 const MainContainer = styled.div`
   border: 1px solid ${(props) => props.theme.onPrimary};
   border-radius: 8px;
@@ -13,6 +15,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0.4rem 0.4rem;
+  cursor: pointer;
 `;
 
 const StyledSpan = styled.span`
@@ -31,11 +34,19 @@ const StyledIcon = styled.div`
 
 const NoteItem = (props) => {
   const { note } = props;
-  const newDate = new Date(note.createdAt);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const newDate = new Date(note.updatedAt);
   const formatedDate = format(newDate, "MMMM dd, yyyy");
+
+  const initialValues = {
+    title: note.title,
+    body: note.body,
+    isPrivate: note.isPrivate,
+  };
+
   return (
     <MainContainer>
-      <Container>
+      <Container onClick={() => setIsModalOpen(!isModalOpen)}>
         <StyledSpan>{formatedDate}</StyledSpan>
         <Wrapper>
           <StyledIcon>
@@ -50,6 +61,16 @@ const NoteItem = (props) => {
           {note.body.substring(0, 100)} {note.title.length > 50 && `...`}
         </StyledSpan>
       </Container>
+      <AddNoteModal
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        initialValues={initialValues}
+        isEdit={true}
+        noteId={note.id}
+        noteCreator={note.personId}
+        activeButtonText="Edit Note"
+        cancelButtonText="Close"
+      />
     </MainContainer>
   );
 };
