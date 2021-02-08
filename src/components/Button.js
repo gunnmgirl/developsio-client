@@ -14,6 +14,7 @@ const StyledButton = styled.button`
   font-size: 1rem;
   :hover {
     background-color: ${(props) => props.theme.onHover};
+    color: ${(props) => props.theme.primary};
   }
   width: ${(props) => (props.shouldFitContainer ? "100%" : "auto")};
 `;

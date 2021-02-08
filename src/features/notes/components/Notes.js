@@ -1,21 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { ArrowLeftCircle, ArrowRightCircle } from "react-feather";
+import { ArrowLeftCircle, ArrowRightCircle, PlusCircle } from "react-feather";
 
 import { getNotes } from "../actions/notesActions";
-
 import NoteItem from "./NoteItem";
 import Spinner from "../../components/Spinner";
 
 const MainContainer = styled.div`
   flex-grow: 1;
+  padding: 2rem 6rem;
 `;
 
 const Container = styled.div`
   display: grid;
   height: 70%;
-  padding: 1rem 6rem;
+  padding: 1rem 0;
   grid-gap: 2rem;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
@@ -43,6 +43,23 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+`;
+
+const StyledPlusCircle = styled(PlusCircle)`
+  color: ${(props) => props.theme.secondary};
+  margin-right: 0.4rem;
+`;
+
+const StyledSpan = styled.span`
+  color: ${(props) => props.theme.secondary};
+`;
+
+const RowContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0;
 `;
 
 const Notes = () => {
@@ -52,6 +69,7 @@ const Notes = () => {
   const totalCount = useSelector((state) => state.notes.totalCount);
   const loading = useSelector((state) => state.notes.loading);
   const [page, setPage] = React.useState(0);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const previousPage = () => {
     if (page > 0) {
