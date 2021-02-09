@@ -58,7 +58,14 @@ const DataRow = styled.div`
 `;
 
 function Table(props) {
-  const { columns, data, handleSetPage, totalCount } = props;
+  const {
+    columns,
+    data,
+    handleSetPage,
+    totalCount,
+    isReset,
+    setIsReset,
+  } = props;
   const limit = useSelector((state) => state.people.limit);
   const loading = useSelector((state) => state.people.loading);
   const {
@@ -70,6 +77,7 @@ function Table(props) {
     previousPage,
     canPreviousPage,
     canNextPage,
+    gotoPage,
     prepareRow,
     state: { pageIndex },
   } = useTable(
@@ -85,8 +93,12 @@ function Table(props) {
   );
 
   React.useEffect(() => {
+    if (isReset) {
+      gotoPage(0);
+      setIsReset(false);
+    }
     handleSetPage(pageIndex);
-  }, [pageIndex]);
+  }, [pageIndex, isReset]);
 
   return (
     <Container>
