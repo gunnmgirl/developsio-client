@@ -92,6 +92,7 @@ const People = () => {
   const totalCount = useSelector((state) => state.people.totalCount);
   const positions = useSelector((state) => state.positions.positions);
   const [page, setPage] = React.useState(0);
+  const [isReset, setIsReset] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
 
@@ -181,8 +182,10 @@ const People = () => {
               <PopoverItem
                 onClick={() => {
                   if (position.name === `All Positions`) {
+                    setIsReset(true);
                     setFilter(null);
                   } else {
+                    setIsReset(true);
                     setFilter(position.name);
                   }
                   setIsFilterOpen(false);
@@ -241,6 +244,8 @@ const People = () => {
         columns={columns}
         handleSetPage={handleSetPage}
         totalCount={totalCount}
+        isReset={isReset}
+        setIsReset={setIsReset}
       />
     </MainContainer>
   );

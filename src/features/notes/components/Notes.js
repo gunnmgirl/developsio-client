@@ -172,6 +172,7 @@ const Notes = () => {
         {filterOptions.map((option) => (
           <PopoverItem
             onClick={() => {
+              setPage(0);
               setFilter(option);
               setIsFilterOpen(false);
             }}
