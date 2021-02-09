@@ -43,6 +43,7 @@ export default (state = INITIAL_STATE, action) => {
         people: state.people.filter(
           (person) => person.person.id !== action.payload
         ),
+        totalCount: state.totalCount - 1,
       };
     case "DELETE_APPLICANT_REQUEST":
       return {
