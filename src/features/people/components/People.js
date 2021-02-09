@@ -3,11 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import format from "date-fns/format";
 import styled from "styled-components";
 import { Popover } from "@malcodeman/react-popover";
-import { ChevronDown, AlignCenter } from "react-feather";
+import { ChevronDown, AlignCenter, MoreHorizontal } from "react-feather";
 
 import { getApplicants } from "../actions/peopleActions";
 import { getPositions } from "../../positions/actions/positionsActions";
 import Table from "./Table";
+import history from "../../../routing/history";
 
 const MainContainer = styled.div`
   flex-grow: 1;
@@ -126,6 +127,37 @@ const People = () => {
         Header: "Date Created",
         accessor: "date",
       },
+      {
+        Header: "",
+        accessor: "more",
+        Cell: (props) => {
+          const [isMoreOpen, setIsMoreOpen] = React.useState(false);
+          return (
+            <Popover
+              isOpen={isMoreOpen}
+              content={() => (
+                <PopoverMainContainer>
+                  <PopoverItem
+                    onClick={() => history.push(`/person/${props.value}`)}
+                  >
+                    View
+                  </PopoverItem>
+                  <PopoverItem>Delete</PopoverItem>
+                </PopoverMainContainer>
+              )}
+            >
+              <MoreHorizontal
+                onClick={() => {
+                  setIsMoreOpen(!isMoreOpen);
+                }}
+                size="2rem"
+                cursor="pointer"
+              />
+            </Popover>
+          );
+        },
+        width: 20,
+      },
     ],
 
     []
@@ -143,6 +175,7 @@ const People = () => {
         number: person.phoneNumber,
         position: person.position.name,
         date: formatedDate,
+        more: person.person.id,
       };
     });
   });

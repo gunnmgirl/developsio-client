@@ -14,6 +14,7 @@ import People from "./features/people/components/People";
 import Notes from "./features/notes/components/Notes";
 import Positions from "./features/positions/components/Positions";
 import Header from "./features/components/Header";
+import PersonDetails from "./features/people/components/PersonDetails";
 
 const Container = styled.div`
   height: 100vh;
@@ -42,6 +43,7 @@ function App() {
               <Route path="/people" component={People} />
               <Route path="/notes" component={Notes} />
               <Route path="/positions" component={Positions} />
+              <Route path="/:personId" component={PersonDetails} />
             </Switch>
           </Container>
         ) : (
