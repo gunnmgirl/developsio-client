@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Popover } from "@malcodeman/react-popover";
 import { ChevronDown, AlignCenter, MoreHorizontal } from "react-feather";
 
-import { getApplicants } from "../actions/peopleActions";
+import { getApplicants, deleteApplicant } from "../actions/peopleActions";
 import { getPositions } from "../../positions/actions/positionsActions";
 import Table from "./Table";
 import history from "../../../routing/history";
@@ -135,6 +135,7 @@ const People = () => {
           return (
             <Popover
               isOpen={isMoreOpen}
+              onClickOutside={() => setIsMoreOpen(false)}
               content={() => (
                 <PopoverMainContainer>
                   <PopoverItem
@@ -142,7 +143,13 @@ const People = () => {
                   >
                     View
                   </PopoverItem>
-                  <PopoverItem>Delete</PopoverItem>
+                  <PopoverItem
+                    onClick={() => {
+                      dispatch(deleteApplicant({ personId: props.value }));
+                    }}
+                  >
+                    Delete
+                  </PopoverItem>
                 </PopoverMainContainer>
               )}
             >

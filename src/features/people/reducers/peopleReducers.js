@@ -29,6 +29,27 @@ export default (state = INITIAL_STATE, action) => {
         loading: true,
         error: false,
       };
+    case "DELETE_APPLICANT_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "DELETE_APPLICANT_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        people: state.people.filter(
+          (person) => person.person.id !== action.payload
+        ),
+      };
+    case "DELETE_APPLICANT_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
     default:
       return { ...state };
   }
