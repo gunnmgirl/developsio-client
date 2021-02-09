@@ -58,7 +58,8 @@ const NoteItem = (props) => {
           </p>
         </Wrapper>
         <StyledSpan>
-          {note.body.substring(0, 100)} {note.title.length > 50 && `...`}
+          {note && note.body && note.body.substring(0, 100)}
+          {note && note.body && note.body.length > 50 && `...`}
         </StyledSpan>
       </Container>
       <AddNoteModal

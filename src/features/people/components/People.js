@@ -3,12 +3,38 @@ import { useSelector, useDispatch } from "react-redux";
 import format from "date-fns/format";
 import styled from "styled-components";
 import { Popover } from "@malcodeman/react-popover";
+import { Modal } from "@malcodeman/react-modal";
 import { ChevronDown, AlignCenter, MoreHorizontal } from "react-feather";
 
 import { getApplicants, deleteApplicant } from "../actions/peopleActions";
 import { getPositions } from "../../positions/actions/positionsActions";
 import Table from "./Table";
+import Button from "../../../components/Button";
 import history from "../../../routing/history";
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-self: flex-end;
+`;
+
+const StyledButton = styled(Button)`
+  background-color: ${(props) => props.theme.primary};
+  color: ${(props) => props.theme.secondary};
+  border: 1.5px solid ${(props) => props.theme.secondary};
+  border-radius: 6px;
+  height: 1.6rem;
+  padding: 0.2rem 0.6rem;
+`;
+
+const StyledActiveButton = styled(StyledButton)`
+  background-color: ${(props) => props.theme.secondary};
+  color: ${(props) => props.theme.primary};
+  margin-left: 0.4rem;
+`;
+
+const StyledP = styled.p`
+  margin: 1rem 0;
+`;
 
 const MainContainer = styled.div`
   flex-grow: 1;
@@ -87,6 +113,18 @@ const StyledFilter = styled(StyledSort)`
   cursor: pointer;
 `;
 
+const ModalMainContainer = styled.div`
+  min-height: 10rem;
+  width: 20rem;
+  background-color: ${(props) => props.theme.primary};
+  border-radius: 8px;
+  padding: 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const People = () => {
   const dispatch = useDispatch();
   const people = useSelector((state) => state.people.people);
@@ -132,35 +170,63 @@ const People = () => {
         accessor: "more",
         Cell: (props) => {
           const [isMoreOpen, setIsMoreOpen] = React.useState(false);
+          const [isModalOpen, setIsModalOpen] = React.useState(false);
+
           return (
-            <Popover
-              isOpen={isMoreOpen}
-              onClickOutside={() => setIsMoreOpen(false)}
-              content={() => (
-                <PopoverMainContainer>
-                  <PopoverItem
-                    onClick={() => history.push(`/person/${props.value}`)}
-                  >
-                    View
-                  </PopoverItem>
-                  <PopoverItem
-                    onClick={() => {
-                      dispatch(deleteApplicant({ personId: props.value }));
-                    }}
-                  >
-                    Delete
-                  </PopoverItem>
-                </PopoverMainContainer>
-              )}
-            >
-              <MoreHorizontal
-                onClick={() => {
-                  setIsMoreOpen(!isMoreOpen);
+            <>
+              <Popover
+                isOpen={isMoreOpen}
+                onClickOutside={() => setIsMoreOpen(false)}
+                content={() => (
+                  <PopoverMainContainer>
+                    <PopoverItem
+                      onClick={() => history.push(`/person/${props.value}`)}
+                    >
+                      View
+                    </PopoverItem>
+                    <PopoverItem
+                      onClick={() => {
+                        setIsModalOpen(!isModalOpen);
+                        setIsMoreOpen(false);
+                      }}
+                    >
+                      Delete
+                    </PopoverItem>
+                  </PopoverMainContainer>
+                )}
+              >
+                <MoreHorizontal
+                  onClick={() => {
+                    setIsMoreOpen(!isMoreOpen);
+                  }}
+                  size="2rem"
+                  cursor="pointer"
+                />
+              </Popover>
+              <Modal
+                isOpen={isModalOpen}
+                onClose={() => {
+                  setIsModalOpen(false);
                 }}
-                size="2rem"
-                cursor="pointer"
-              />
-            </Popover>
+              >
+                <ModalMainContainer>
+                  <StyledP>{`Are you sure you want to delete ${props.row.values.name}?`}</StyledP>
+                  <ButtonWrapper>
+                    <StyledButton onClick={() => setIsModalOpen(false)}>
+                      Cancle
+                    </StyledButton>
+                    <StyledActiveButton
+                      onClick={() => {
+                        dispatch(deleteApplicant({ personId: props.value }));
+                        setIsModalOpen(false);
+                      }}
+                    >
+                      Delete
+                    </StyledActiveButton>
+                  </ButtonWrapper>
+                </ModalMainContainer>
+              </Modal>
+            </>
           );
         },
         width: 20,
