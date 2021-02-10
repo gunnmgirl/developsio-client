@@ -85,7 +85,7 @@ const AddNoteModal = ({
   activeButtonText = "Add Note",
   cancelButtonText = "Cancle",
 }) => {
-  const emptyState = {};
+  const emptyState = { isPrivate: 0 };
   const dispatch = useDispatch();
   const myId = useSelector((state) => state.auth.me.id);
   const disabled = isEdit && myId !== noteCreator;

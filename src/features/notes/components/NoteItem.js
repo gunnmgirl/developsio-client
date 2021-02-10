@@ -14,6 +14,8 @@ const MainContainer = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
   padding: 0.4rem 0.4rem;
   cursor: pointer;
 `;
@@ -30,6 +32,11 @@ const Wrapper = styled.div`
 const StyledIcon = styled.div`
   color: ${(props) => props.theme.secondary};
   margin-right: 0.6rem;
+`;
+
+const StyledName = styled.span`
+  margin-top: 1rem;
+  color: ${(props) => props.theme.secondary};
 `;
 
 const NoteItem = (props) => {
@@ -53,14 +60,15 @@ const NoteItem = (props) => {
             <FileText />
           </StyledIcon>
           <p>
-            {note.title.substring(0, 50)}
-            {note.title.length > 50 && `...`}
+            {note && note.title && note.title.substring(0, 50)}
+            {note && note.title && note.title.length > 50 && `...`}
           </p>
         </Wrapper>
         <StyledSpan>
           {note && note.body && note.body.substring(0, 100)}
           {note && note.body && note.body.length > 50 && `...`}
         </StyledSpan>
+        <StyledName>{`${note?.person?.firstName} ${note?.person?.lastName}`}</StyledName>
       </Container>
       <AddNoteModal
         isOpen={isModalOpen}
