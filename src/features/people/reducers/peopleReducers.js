@@ -20,7 +20,7 @@ export default (state = INITIAL_STATE, action) => {
         loading: false,
         error: false,
         people: action.payload.applicants,
-        totalCount: action.payload.count.count,
+        totalCount: action.payload.count,
         limit: action.payload.limit,
       };
     case "GET_APPLICANTS_REQUEST":
@@ -40,10 +40,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         error: false,
-        people: state.people.filter(
-          (person) => person.person.id !== action.payload
-        ),
-        totalCount: state.totalCount - 1,
+        people: state.people.map((person) => {
+          if (person.person.id === action.payload.personId) {
+            person.status = action.payload.status;
+          }
+          return person;
+        }),
       };
     case "DELETE_APPLICANT_REQUEST":
       return {

@@ -45,8 +45,9 @@ export const deleteApplicant = (payload) => {
   return async (dispatch) => {
     dispatch(deleteApplicantRequest());
     try {
-      await request.delete(`/applicant/`, payload);
-      dispatch(deleteApplicantSuccess(payload.personId));
+      const response = await request.delete(`/applicant/`, payload);
+      response.data.personId = payload.personId;
+      dispatch(deleteApplicantSuccess(response.data));
       notify("Applicant was successfully deleted.", "success");
     } catch (error) {
       if (!error || !error.data) {
