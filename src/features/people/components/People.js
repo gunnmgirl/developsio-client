@@ -8,6 +8,7 @@ import { ChevronDown, AlignCenter, MoreHorizontal } from "react-feather";
 
 import { getApplicants, deleteApplicant } from "../actions/peopleActions";
 import { getPositions } from "../../positions/actions/positionsActions";
+import { getStatuses } from "../../statuses/actions/statusesActions";
 import Table from "./Table";
 import Button from "../../../components/Button";
 import history from "../../../routing/history";
@@ -125,22 +126,25 @@ const ModalMainContainer = styled.div`
   align-items: center;
 `;
 
+const sortBy = [
+  { name: "Latest", value: "DESC" },
+  { name: "Oldest", value: "ASC" },
+];
+
 const People = () => {
   const dispatch = useDispatch();
   const people = useSelector((state) => state.people.people);
   const totalCount = useSelector((state) => state.people.totalCount);
   const positions = useSelector((state) => state.positions.positions);
+  const statuses = useSelector((state) => state.statuses.statuses);
   const [page, setPage] = React.useState(0);
   const [isReset, setIsReset] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
+  const [isStatusesOpen, setIsStatusesOpen] = React.useState(false);
   const [isFilterOpen, setIsFilterOpen] = React.useState(false);
 
-  const sortBy = [
-    { name: "Latest", value: "DESC" },
-    { name: "Oldest", value: "ASC" },
-  ];
-
   const [order, setOrder] = React.useState(sortBy[0]);
+  const [status, setStatus] = React.useState(null);
   const [filter, setFilter] = React.useState(null);
 
   const columns = React.useMemo(
@@ -148,6 +152,7 @@ const People = () => {
       {
         Header: "",
         accessor: "imageUrl",
+        width: 40,
       },
       {
         Header: "Full Name",
@@ -164,6 +169,10 @@ const People = () => {
       {
         Header: "Date Created",
         accessor: "date",
+      },
+      {
+        Header: "Status",
+        accessor: "status",
       },
       {
         Header: "",
@@ -210,7 +219,7 @@ const People = () => {
                 }}
               >
                 <ModalMainContainer>
-                  <StyledP>{`Are you sure you want to delete ${props.row.values.name}?`}</StyledP>
+                  <StyledP>{`Are you sure you want to delete applicant ${props.row.values.name}?`}</StyledP>
                   <ButtonWrapper>
                     <StyledButton onClick={() => setIsModalOpen(false)}>
                       Cancle
@@ -248,6 +257,7 @@ const People = () => {
         number: person.phoneNumber,
         position: person.position.name,
         date: formatedDate,
+        status: person.status.name,
         more: person.person.id,
       };
     });
@@ -305,9 +315,40 @@ const People = () => {
     );
   };
 
+  const getStatusesPopoverContent = () => {
+    return (
+      <PopoverMainContainer>
+        {statuses
+          ? statuses.map((status) => (
+              <PopoverItem
+                onClick={() => {
+                  setIsReset(true);
+                  if (status.name === `All Statuses`) {
+                    setStatus(null);
+                  } else {
+                    setStatus(status);
+                  }
+                  setIsStatusesOpen(false);
+                }}
+              >
+                {status.name}
+              </PopoverItem>
+            ))
+          : null}
+      </PopoverMainContainer>
+    );
+  };
+
   React.useEffect(() => {
-    dispatch(getApplicants({ page, order: order.value, filter }));
-  }, [page, order, filter]);
+    dispatch(
+      getApplicants({
+        page,
+        order: order.value,
+        filter,
+        statusId: status?.id || null,
+      })
+    );
+  }, [page, order, filter, status]);
 
   return (
     <MainContainer>
@@ -329,6 +370,24 @@ const People = () => {
             >
               <StyledAlignCenter />
               <span>{!filter ? `All Positions` : `${filter}`}</span>
+              <ChevronDown size="1rem" />
+            </StyledFilter>
+          </Popover>
+          <Popover
+            isOpen={isStatusesOpen}
+            content={getStatusesPopoverContent}
+            onClickOutside={() => setIsStatusesOpen(false)}
+          >
+            <StyledFilter
+              onClick={() => {
+                if (!status || !status.length) {
+                  dispatch(getStatuses());
+                }
+                setIsStatusesOpen(!isStatusesOpen);
+              }}
+            >
+              <StyledAlignCenter />
+              <span>{!status ? `All Statuses` : `${status.name}`}</span>
               <ChevronDown size="1rem" />
             </StyledFilter>
           </Popover>
