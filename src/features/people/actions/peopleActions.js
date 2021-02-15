@@ -78,3 +78,41 @@ const deleteApplicantSuccess = (payload) => {
     payload,
   };
 };
+
+export const restoreApplicant = (payload) => {
+  return async (dispatch) => {
+    dispatch(restoreApplicantRequest());
+    try {
+      const response = await request.post(`/applicant/`, payload);
+      response.data.personId = payload.personId;
+      dispatch(restoreApplicantSuccess(response.data));
+      notify("Applicant was successfully restored.", "success");
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        notify(error.data, "error");
+      }
+      dispatch(restoreApplicantFailure());
+    }
+  };
+};
+
+const restoreApplicantRequest = () => {
+  return {
+    type: "RESTORE_APPLICANT_REQUEST",
+  };
+};
+
+const restoreApplicantFailure = () => {
+  return {
+    type: "RESTORE_APPLICANT_FAILURE",
+  };
+};
+
+const restoreApplicantSuccess = (payload) => {
+  return {
+    type: "RESTORE_APPLICANT_SUCCESS",
+    payload,
+  };
+};

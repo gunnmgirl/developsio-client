@@ -6,7 +6,11 @@ import { Popover } from "@malcodeman/react-popover";
 import { Modal } from "@malcodeman/react-modal";
 import { ChevronDown, AlignCenter, MoreHorizontal } from "react-feather";
 
-import { getApplicants, deleteApplicant } from "../actions/peopleActions";
+import {
+  getApplicants,
+  deleteApplicant,
+  restoreApplicant,
+} from "../actions/peopleActions";
 import { getPositions } from "../../positions/actions/positionsActions";
 import { getStatuses } from "../../statuses/actions/statusesActions";
 import Table from "./Table";
@@ -193,14 +197,25 @@ const People = () => {
                     >
                       View
                     </PopoverItem>
-                    <PopoverItem
-                      onClick={() => {
-                        setIsModalOpen(!isModalOpen);
-                        setIsMoreOpen(false);
-                      }}
-                    >
-                      Delete
-                    </PopoverItem>
+                    {props.row.values.status === "Deleted" ? (
+                      <PopoverItem
+                        onClick={() => {
+                          setIsMoreOpen(false);
+                          dispatch(restoreApplicant({ personId: props.value }));
+                        }}
+                      >
+                        Restore
+                      </PopoverItem>
+                    ) : (
+                      <PopoverItem
+                        onClick={() => {
+                          setIsModalOpen(!isModalOpen);
+                          setIsMoreOpen(false);
+                        }}
+                      >
+                        Delete
+                      </PopoverItem>
+                    )}
                   </PopoverMainContainer>
                 )}
               >

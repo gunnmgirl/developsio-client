@@ -53,6 +53,30 @@ export default (state = INITIAL_STATE, action) => {
         loading: true,
         error: false,
       };
+    case "RESTORE_APPLICANT_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "RESTORE_APPLICANT_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        people: state.people.map((person) => {
+          if (person.person.id === action.payload.personId) {
+            person.status = action.payload.status;
+          }
+          return person;
+        }),
+      };
+    case "RESTORE_APPLICANT_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
     default:
       return { ...state };
   }
