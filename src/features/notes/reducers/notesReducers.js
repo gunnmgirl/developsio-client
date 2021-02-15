@@ -35,7 +35,8 @@ export default (state = INITIAL_STATE, action) => {
         error: true,
       };
     case "ADD_NOTE_SUCCESS":
-      const newNotes = state.notes.slice(0, -1);
+      const newNotes =
+        state.notes?.length >= 10 ? state.notes.slice(0, -1) : state.notes;
       return {
         ...state,
         loading: false,
