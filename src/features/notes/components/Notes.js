@@ -125,7 +125,8 @@ const Notes = () => {
 
   const filterOptions = [
     { name: "All  Notes", value: null },
-    { name: "My Notes", value: true },
+    { name: "My Notes (Private)", value: 1 },
+    { name: "My Notes (Shared)", value: 0 },
   ];
 
   const [order, setOrder] = React.useState(sortBy[0]);
