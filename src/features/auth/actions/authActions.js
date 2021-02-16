@@ -35,7 +35,7 @@ const loginFailure = () => {
   };
 };
 
-const loginSuccess = (payload) => {
+export const loginSuccess = (payload) => {
   return {
     type: "LOGIN_SUCCESS",
     payload,

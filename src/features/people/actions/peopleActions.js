@@ -1,6 +1,7 @@
 import request from "../../../http";
 import notify from "../../../notifications";
 import { PEOPLE_LIMIT } from "../constants";
+import { loginSuccess } from "../../auth/actions/authActions";
 
 export const getApplicants = (payload) => {
   const { page } = payload;
@@ -191,6 +192,84 @@ const changeApplicantStatusFailure = () => {
 const changeApplicantStatusSuccess = (payload) => {
   return {
     type: "UPDATE_APPLICANT_STATUS_SUCCESS",
+    payload,
+  };
+};
+
+export const getMe = (payload) => {
+  const { personId } = payload;
+  return async (dispatch) => {
+    dispatch(getMeRequest());
+    try {
+      const response = await request.get(`/person/${personId}`);
+      dispatch(getMeSuccess(response.data));
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        notify(error.data, "error");
+      }
+      dispatch(getMeFailure());
+    }
+  };
+};
+
+const getMeRequest = () => {
+  return {
+    type: "GET_ME_REQUEST",
+  };
+};
+
+const getMeFailure = () => {
+  return {
+    type: "GET_ME_FAILURE",
+  };
+};
+
+const getMeSuccess = (payload) => {
+  return {
+    type: "GET_ME_SUCCESS",
+    payload,
+  };
+};
+
+export const editProfile = (payload) => {
+  return async (dispatch) => {
+    dispatch(editProfileRequest());
+    try {
+      const response = await request.post(
+        `/person/${payload.personId}`,
+        payload.formData
+      );
+      dispatch(editProfileSuccess(response.data));
+      dispatch(loginSuccess(response.data));
+      notify("Successfully edited profile.", "success");
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        notify(error.data, "error");
+      }
+      dispatch(editProfileFailure());
+    }
+  };
+};
+
+const editProfileRequest = () => {
+  return {
+    type: "EDIT_PROFILE_REQUEST",
+  };
+};
+
+const editProfileFailure = () => {
+  return {
+    type: "EDIT_PROFILE_FAILURE",
+  };
+};
+
+const editProfileSuccess = (payload) => {
+  return {
+    type: "EDIT_PROFILE_SUCCESS",
     payload,
   };
 };

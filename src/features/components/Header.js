@@ -7,6 +7,7 @@ import { Popover } from "@malcodeman/react-popover";
 
 import { logout } from "../auth/actions/authActions";
 import LogoIcon from "../../icons/LogoIcon";
+import history from "../../routing/history";
 
 const AdminImage = styled.div`
   height: 3rem;
@@ -84,6 +85,7 @@ const Header = () => {
   const imageUrl = useSelector((state) => state.auth.me.imageUrl);
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = React.useState(false);
+  const meId = useSelector((state) => state.auth.me.id);
 
   const getPopoverContent = () => {
     return (
@@ -95,7 +97,14 @@ const Header = () => {
         >
           Log out
         </PopoverItem>
-        <PopoverItem>Edit Profile</PopoverItem>
+        <PopoverItem
+          onClick={() => {
+            history.push(`/profile/${meId}`);
+            setIsOpen(false);
+          }}
+        >
+          Edit Profile
+        </PopoverItem>
       </PopoverMainContainer>
     );
   };
