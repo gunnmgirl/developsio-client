@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   person: null,
   page: 0,
   totalCount: 0,
+  me: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -111,6 +112,44 @@ export default (state = INITIAL_STATE, action) => {
         person: { ...state.person, status: action.payload.status },
       };
     case "UPDATE_APPLICANT_STATUS_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case "GET_ME_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "GET_ME_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        me: action.payload,
+      };
+    case "GET_ME_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case "EDIT_PROFILE_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "EDIT_PROFILE_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        me: action.payload,
+      };
+    case "EDIT_PROFILE_REQUEST":
       return {
         ...state,
         loading: true,
