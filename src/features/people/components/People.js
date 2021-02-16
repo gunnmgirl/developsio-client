@@ -237,7 +237,7 @@ const People = () => {
                   <StyledP>{`Are you sure you want to delete applicant ${props.row.values.name}?`}</StyledP>
                   <ButtonWrapper>
                     <StyledButton onClick={() => setIsModalOpen(false)}>
-                      Cancle
+                      Cancel
                     </StyledButton>
                     <StyledActiveButton
                       onClick={() => {
