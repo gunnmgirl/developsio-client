@@ -193,7 +193,7 @@ const People = () => {
                 content={() => (
                   <PopoverMainContainer>
                     <PopoverItem
-                      onClick={() => history.push(`/person/${props.value}`)}
+                      onClick={() => history.push(`/people/${props.value}`)}
                     >
                       View
                     </PopoverItem>
@@ -331,10 +331,11 @@ const People = () => {
   };
 
   const getStatusesPopoverContent = () => {
+    const newStatuses = [{ name: "All Statuses" }, ...statuses];
     return (
       <PopoverMainContainer>
-        {statuses
-          ? statuses.map((status) => (
+        {newStatuses
+          ? newStatuses.map((status) => (
               <PopoverItem
                 onClick={() => {
                   setIsReset(true);

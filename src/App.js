@@ -40,10 +40,10 @@ function App() {
           <Container>
             <Header />
             <Switch>
+              <Route path="/people/:personId" component={PersonDetails} />
               <Route path="/people" component={People} />
               <Route path="/notes" component={Notes} />
               <Route path="/positions" component={Positions} />
-              <Route path="/:personId" component={PersonDetails} />
             </Switch>
           </Container>
         ) : (

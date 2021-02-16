@@ -41,6 +41,43 @@ const getApplicantsSuccess = (payload) => {
   };
 };
 
+export const getApplicant = (payload) => {
+  const { personId } = payload;
+  return async (dispatch) => {
+    dispatch(getApplicantRequest());
+    try {
+      const response = await request.get(`/applicant/${personId}`);
+      dispatch(getApplicantSuccess(response.data));
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        notify(error.data, "error");
+      }
+      dispatch(getApplicantFailure());
+    }
+  };
+};
+
+const getApplicantRequest = () => {
+  return {
+    type: "GET_APPLICANT_REQUEST",
+  };
+};
+
+const getApplicantFailure = () => {
+  return {
+    type: "GET_APPLICANT_FAILURE",
+  };
+};
+
+const getApplicantSuccess = (payload) => {
+  return {
+    type: "GET_APPLICANT_SUCCESS",
+    payload,
+  };
+};
+
 export const deleteApplicant = (payload) => {
   return async (dispatch) => {
     dispatch(deleteApplicantRequest());
@@ -113,6 +150,47 @@ const restoreApplicantFailure = () => {
 const restoreApplicantSuccess = (payload) => {
   return {
     type: "RESTORE_APPLICANT_SUCCESS",
+    payload,
+  };
+};
+
+export const changeApplicantStatus = (payload) => {
+  return async (dispatch) => {
+    dispatch(changeApplicantStatusRequest());
+    try {
+      const response = await request.post(`/applicant/status`, {
+        statusId: payload.status.id,
+        personId: payload.personId,
+      });
+      response.data.status = payload.status;
+      dispatch(changeApplicantStatusSuccess(response.data));
+      notify("Successfully updated applicant status.", "success");
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        notify(error.data, "error");
+      }
+      dispatch(changeApplicantStatusFailure());
+    }
+  };
+};
+
+const changeApplicantStatusRequest = () => {
+  return {
+    type: "UPDATE_APPLICANT_STATUS_REQUEST",
+  };
+};
+
+const changeApplicantStatusFailure = () => {
+  return {
+    type: "UPDATE_APPLICANT_STATUS_FAILURE",
+  };
+};
+
+const changeApplicantStatusSuccess = (payload) => {
+  return {
+    type: "UPDATE_APPLICANT_STATUS_SUCCESS",
     payload,
   };
 };
