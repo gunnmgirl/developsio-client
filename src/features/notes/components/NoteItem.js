@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import format from "date-fns/format";
 import { FileText } from "react-feather";
+import { useSelector } from "react-redux";
 
 import AddNoteModal from "./AddNoteModal";
 
@@ -44,6 +45,7 @@ const NoteItem = (props) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const newDate = new Date(note.updatedAt);
   const formatedDate = format(newDate, "MMMM dd, yyyy");
+  const myId = useSelector((state) => state.auth.me.id);
 
   const initialValues = {
     title: note.title,
@@ -78,7 +80,8 @@ const NoteItem = (props) => {
         noteId={note.id}
         noteCreator={note.personId}
         activeButtonText="Edit Note"
-        cancelButtonText="Close"
+        cancelButtonText={note?.personId === myId ? "Delete Note" : "Close"}
+        myId={myId}
       />
     </MainContainer>
   );

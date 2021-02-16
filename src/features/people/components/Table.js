@@ -135,18 +135,20 @@ function Table(props) {
               );
             })}
           </Body>
-          <Wrapper>
-            <IconWrapper
-              onClick={() => previousPage()}
-              disabled={!canPreviousPage}
-            >
-              <ArrowLeftCircle />
-            </IconWrapper>
-            <PageWrapper>{`${pageIndex + 1}`}</PageWrapper>
-            <IconWrapper onClick={() => nextPage()} disabled={!canNextPage}>
-              <ArrowRightCircle />
-            </IconWrapper>
-          </Wrapper>
+          {totalCount > 0 ? (
+            <Wrapper>
+              <IconWrapper
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+              >
+                <ArrowLeftCircle />
+              </IconWrapper>
+              <PageWrapper>{`${pageIndex + 1}`}</PageWrapper>
+              <IconWrapper onClick={() => nextPage()} disabled={!canNextPage}>
+                <ArrowRightCircle />
+              </IconWrapper>
+            </Wrapper>
+          ) : null}
         </div>
       )}
     </Container>

@@ -4,8 +4,9 @@ import { Modal } from "@malcodeman/react-modal";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import { X } from "react-feather";
 
-import { addNote, editNote } from "../actions/notesActions";
+import { addNote, editNote, deleteNote } from "../actions/notesActions";
 import FormControl from "../../../components/FormControl";
 import Input from "../../../components/Input";
 import Textarea from "../../../components/Textarea";
@@ -30,10 +31,13 @@ const StyledLabel = styled.label`
 `;
 
 const ModalMainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   min-height: 20rem;
   width: 25rem;
   background-color: ${(props) => props.theme.primary};
   border-radius: 8px;
+  padding: 1rem 1rem;
 `;
 
 const WrapperButtons = styled(WrapperRadio)`
@@ -46,9 +50,7 @@ const StyledActiveButton = styled(StyledButton)`
   margin-left: 0.4rem;
 `;
 
-const StyledForm = styled.div`
-  padding: 1rem 1rem;
-`;
+const StyledForm = styled.div``;
 
 const StyledInput = styled(Input)`
   border: 0;
@@ -75,6 +77,13 @@ const validationSchema = Yup.object().shape({
   title: Yup.string().required("Title is required!"),
 });
 
+const StyledX = styled(X)`
+  align-self: flex-end;
+  color: ${(props) => props.theme.secondaryText};
+  size: 1rem;
+  cursor: pointer;
+`;
+
 const AddNoteModal = ({
   isOpen,
   setIsOpen,
@@ -84,10 +93,10 @@ const AddNoteModal = ({
   noteCreator,
   activeButtonText = "Add Note",
   cancelButtonText = "Cancle",
+  myId,
 }) => {
-  const emptyState = { isPrivate: 0 };
+  const emptyState = { isPrivate: 0, title: "" };
   const dispatch = useDispatch();
-  const myId = useSelector((state) => state.auth.me.id);
   const disabled = isEdit && myId !== noteCreator;
   const formik = useFormik({
     initialValues: initialValues || emptyState,
@@ -116,6 +125,12 @@ const AddNoteModal = ({
       }}
     >
       <ModalMainContainer>
+        <StyledX
+          onClick={() => {
+            setIsOpen(false);
+            formik.resetForm(emptyState);
+          }}
+        />
         <StyledForm onSubmit={formik.handleSubmit}>
           <FormControl
             label="Title"
@@ -161,6 +176,9 @@ const AddNoteModal = ({
           <WrapperButtons>
             <StyledButton
               onClick={() => {
+                if (isEdit && myId === noteCreator) {
+                  dispatch(deleteNote({ noteId }));
+                }
                 setIsOpen(false);
                 formik.resetForm(emptyState);
               }}
@@ -168,7 +186,11 @@ const AddNoteModal = ({
               {cancelButtonText}
             </StyledButton>
             {!disabled && (
-              <StyledActiveButton onClick={() => formik.handleSubmit()}>
+              <StyledActiveButton
+                onClick={() => {
+                  formik.handleSubmit();
+                }}
+              >
                 {activeButtonText}
               </StyledActiveButton>
             )}

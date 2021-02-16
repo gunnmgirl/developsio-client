@@ -227,18 +227,21 @@ const Notes = () => {
               <NoteItem note={note} />
             ))}
           </Container>
-          <Wrapper>
-            <IconWrapper onClick={() => previousPage()} disabled={page < 1}>
-              <ArrowLeftCircle />
-            </IconWrapper>
-            <PageWrapper>{`${page + 1}`}</PageWrapper>
-            <IconWrapper
-              onClick={() => nextPage()}
-              disabled={!(page < Math.floor(totalCount / limit))}
-            >
-              <ArrowRightCircle />
-            </IconWrapper>
-          </Wrapper>
+          {notes?.length > 0 ? (
+            <Wrapper>
+              <IconWrapper onClick={() => previousPage()} disabled={page < 1}>
+                <ArrowLeftCircle />
+              </IconWrapper>
+              <PageWrapper>{`${page + 1}`}</PageWrapper>
+              <IconWrapper
+                onClick={() => nextPage()}
+                disabled={!(page < Math.floor(totalCount / limit))}
+              >
+                <ArrowRightCircle />
+              </IconWrapper>
+            </Wrapper>
+          ) : null}
+
           <AddNoteModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
         </>
       )}

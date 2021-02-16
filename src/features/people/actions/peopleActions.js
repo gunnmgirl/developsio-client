@@ -82,7 +82,7 @@ export const deleteApplicant = (payload) => {
   return async (dispatch) => {
     dispatch(deleteApplicantRequest());
     try {
-      const response = await request.delete(`/applicant/`, payload);
+      const response = await request.delete(`/applicant/${payload.personId}`);
       response.data.personId = payload.personId;
       dispatch(deleteApplicantSuccess(response.data));
       notify("Applicant was successfully deleted.", "success");

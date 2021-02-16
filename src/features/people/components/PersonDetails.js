@@ -18,6 +18,7 @@ const StyledFilter = styled.div`
   color: ${(props) => props.theme.secondaryText};
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   cursor: pointer;
 `;
 
