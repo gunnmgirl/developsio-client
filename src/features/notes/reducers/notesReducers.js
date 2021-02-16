@@ -77,6 +77,25 @@ export default (state = INITIAL_STATE, action) => {
         loading: true,
         error: false,
       };
+    case "DELETE_NOTE_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "DELETE_NOTE_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        notes: state.notes.filter((note) => note.id !== action.payload.noteId),
+      };
+    case "DELETE_NOTE_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
     default:
       return { ...state };
   }

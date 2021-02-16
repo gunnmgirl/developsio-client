@@ -46,6 +46,7 @@ export const addNote = (payload) => {
     try {
       const response = await request.post(`/note/`, payload);
       dispatch(addNoteSuccess(response.data));
+      notify("Successfully added a new note.", "success");
     } catch (error) {
       if (!error || !error.data) {
         notify("Something went wrong, please try again later.", "error");
@@ -82,6 +83,7 @@ export const editNote = (payload) => {
     try {
       const response = await request.post(`/note/edit`, payload);
       dispatch(editNoteSuccess(response.data));
+      notify("Successfully edited a note.", "success");
     } catch (error) {
       if (!error || !error.data) {
         notify("Something went wrong, please try again later.", "error");
@@ -108,6 +110,44 @@ const editNoteFailure = () => {
 const editNoteSuccess = (payload) => {
   return {
     type: "EDIT_NOTE_SUCCESS",
+    payload,
+  };
+};
+
+export const deleteNote = (payload) => {
+  return async (dispatch) => {
+    dispatch(deleteNoteRequest());
+    try {
+      const response = await request.delete(`/note/${payload.noteId}`);
+      response.data.noteId = payload.noteId;
+      dispatch(deleteNoteSuccess(response.data));
+      notify("Successfully deleted a note.", "success");
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        notify(error.data, "error");
+      }
+      dispatch(deleteNoteFailure());
+    }
+  };
+};
+
+const deleteNoteRequest = () => {
+  return {
+    type: "DELETE_NOTE_REQUEST",
+  };
+};
+
+const deleteNoteFailure = () => {
+  return {
+    type: "DELETE_NOTE_FAILURE",
+  };
+};
+
+const deleteNoteSuccess = (payload) => {
+  return {
+    type: "DELETE_NOTE_SUCCESS",
     payload,
   };
 };
