@@ -2,6 +2,7 @@ const INITIAL_STATE = {
   loading: false,
   error: false,
   people: [],
+  person: null,
   page: 0,
   totalCount: 0,
 };
@@ -24,6 +25,25 @@ export default (state = INITIAL_STATE, action) => {
         limit: action.payload.limit,
       };
     case "GET_APPLICANTS_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case "GET_APPLICANT_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "GET_APPLICANT_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        person: action.payload,
+      };
+    case "GET_APPLICANT_REQUEST":
       return {
         ...state,
         loading: true,
@@ -72,6 +92,25 @@ export default (state = INITIAL_STATE, action) => {
         }),
       };
     case "RESTORE_APPLICANT_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case "UPDATE_APPLICANT_STATUS_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "UPDATE_APPLICANT_STATUS_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        person: { ...state.person, status: action.payload.status },
+      };
+    case "UPDATE_APPLICANT_STATUS_REQUEST":
       return {
         ...state,
         loading: true,

@@ -17,7 +17,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         error: false,
-        statuses: [{ name: "All Statuses" }, ...action.payload],
+        statuses: action.payload,
       };
     case "GET_STATUSES_REQUEST":
       return {
