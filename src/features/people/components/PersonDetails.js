@@ -3,16 +3,32 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Popover } from "@malcodeman/react-popover";
+import { useFormik } from "formik";
 import { ChevronDown, MapPin } from "react-feather";
 import format from "date-fns/format";
 import { Modal } from "@malcodeman/react-modal";
+import * as Yup from "yup";
 
-import { getApplicant, changeApplicantStatus } from "../actions/peopleActions";
+import {
+  getApplicant,
+  changeApplicantStatus,
+  uploadApplicantImage,
+} from "../actions/peopleActions";
 import { getStatuses } from "../../statuses/actions/statusesActions";
 import noImage from "../../../images/noImage.png";
 import Textarea from "../../../components/Textarea";
+import FormControl from "../../../components/FormControl";
+import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import Spinner from "../../components/Spinner";
+
+const StyledInput = styled(Input)`
+  border: 0;
+  border-bottom: 1px solid ${(props) => props.theme.onPrimary};
+  border-radius: 0;
+  background-color: ${(props) => props.theme.primary};
+  width: 100%;
+`;
 
 const ModalMainContainer = styled.div`
   min-height: 10rem;
@@ -29,6 +45,13 @@ const ModalMainContainer = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   align-self: flex-end;
+`;
+
+const ColumnWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20rem;
 `;
 
 const StyledButton = styled(Button)`
@@ -149,6 +172,10 @@ const StyledTextarea = styled(Textarea)`
   overflow-y: auto;
 `;
 
+const validationSchema = Yup.object().shape({
+  imageFile: Yup.mixed().required("A file is required"),
+});
+
 const PersonDetails = () => {
   const { personId } = useParams();
   const dispatch = useDispatch();
@@ -158,8 +185,27 @@ const PersonDetails = () => {
   const newDate = new Date(person?.createdAt || null);
   const formatedDate = format(newDate, "MMMM dd, yyyy");
   const loading = useSelector((state) => state.people.loading);
+  const loadingImage = useSelector((state) => state.people.loadingImage);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [status, setStatus] = React.useState("");
+
+  const formik = useFormik({
+    initialValues: { imageFile: null },
+    onSubmit: (values, { resetForm }) => {
+      const formData = new FormData();
+      formData.append("file", values.imageFile);
+      dispatch(
+        uploadApplicantImage({ formData, personId: person?.person?.id })
+      );
+      resetForm({});
+    },
+    validationSchema,
+  });
+
+  const handleOnImageUploadChange = async (event) => {
+    const file = event.currentTarget.files[0];
+    formik.setFieldValue("imageFile", file);
+  };
 
   const getPopoverContent = () => {
     return (
@@ -189,10 +235,37 @@ const PersonDetails = () => {
         <Spinner />
       ) : (
         <MainContainer>
-          <ProfileImage
-            noImage={noImage}
-            imageUrl={person?.person?.imageUrl}
-          ></ProfileImage>
+          <ColumnWrapper>
+            {loadingImage ? (
+              <Spinner />
+            ) : (
+              <>
+                <ProfileImage
+                  noImage={noImage}
+                  imageUrl={person?.person?.imageUrl}
+                ></ProfileImage>
+                <FormControl
+                  caption={formik.touched.imageFile && formik.errors.imageFile}
+                >
+                  <StyledInput
+                    name="imageFile"
+                    type="file"
+                    onChange={handleOnImageUploadChange}
+                    onBlur={formik.handleBlur}
+                  />
+                </FormControl>
+                <StyledActiveButton
+                  shouldFitContainer
+                  type="submit"
+                  onClick={() => {
+                    formik.handleSubmit();
+                  }}
+                >
+                  Upload Applicant Image
+                </StyledActiveButton>
+              </>
+            )}
+          </ColumnWrapper>
           <Container>
             <BasicInfo>
               <span>{`${person?.person?.firstName} ${person?.person?.lastName}`}</span>

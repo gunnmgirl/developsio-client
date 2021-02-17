@@ -38,6 +38,9 @@ export default {
   post(path, data) {
     return instance.post(path, data);
   },
+  patch(path, data) {
+    return instance.patch(path, data);
+  },
   delete(path) {
     return instance.delete(path);
   },

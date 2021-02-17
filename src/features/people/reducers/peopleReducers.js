@@ -1,5 +1,6 @@
 const INITIAL_STATE = {
   loading: false,
+  loadingImage: false,
   error: false,
   people: [],
   person: null,
@@ -153,6 +154,28 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading: true,
+        error: false,
+      };
+    case "UPLOAD_APPLICANT_IMAGE_FAILURE":
+      return {
+        ...state,
+        loadingImage: false,
+        error: true,
+      };
+    case "UPLOAD_APPLICANT_IMAGE_SUCCESS":
+      return {
+        ...state,
+        loadingImage: false,
+        error: false,
+        person: {
+          ...state.person,
+          person: { ...state.person.person, imageUrl: action.payload },
+        },
+      };
+    case "UPLOAD_APPLICANT_IMAGE_REQUEST":
+      return {
+        ...state,
+        loadingImage: true,
         error: false,
       };
     default:
