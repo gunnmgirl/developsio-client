@@ -273,3 +273,43 @@ const editProfileSuccess = (payload) => {
     payload,
   };
 };
+
+export const uploadApplicantImage = (payload) => {
+  return async (dispatch) => {
+    dispatch(uploadApplicantImageRequest());
+    try {
+      const response = await request.patch(
+        `/applicant/${payload.personId}`,
+        payload.formData
+      );
+      dispatch(uploadApplicantImageSuccess(response.data));
+      notify("Successfully uploaded applicant image.", "success");
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        notify(error.data, "error");
+      }
+      dispatch(uploadApplicantImageFailure());
+    }
+  };
+};
+
+const uploadApplicantImageRequest = () => {
+  return {
+    type: "UPLOAD_APPLICANT_IMAGE_REQUEST",
+  };
+};
+
+const uploadApplicantImageFailure = () => {
+  return {
+    type: "UPLOAD_APPLICANT_IMAGE_FAILURE",
+  };
+};
+
+const uploadApplicantImageSuccess = (payload) => {
+  return {
+    type: "UPLOAD_APPLICANT_IMAGE_SUCCESS",
+    payload,
+  };
+};
