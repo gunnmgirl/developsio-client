@@ -1,5 +1,6 @@
 import axios from "axios";
-import history from "../routing/history";
+import { logout } from "../features/auth/actions/authActions";
+import store from "../state/store";
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_DEVELOPSIO_API,
@@ -21,8 +22,8 @@ instance.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
-      localStorage.removeItem("token");
-      history.push("/login");
+      const { dispatch } = store;
+      dispatch(logout());
     }
     return Promise.reject(error.response);
   }
