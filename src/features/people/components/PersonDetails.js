@@ -5,21 +5,66 @@ import { useDispatch, useSelector } from "react-redux";
 import { Popover } from "@malcodeman/react-popover";
 import { ChevronDown, MapPin } from "react-feather";
 import format from "date-fns/format";
+import { Modal } from "@malcodeman/react-modal";
 
 import { getApplicant, changeApplicantStatus } from "../actions/peopleActions";
 import { getStatuses } from "../../statuses/actions/statusesActions";
 import noImage from "../../../images/noImage.png";
 import Textarea from "../../../components/Textarea";
+import Button from "../../../components/Button";
 import Spinner from "../../components/Spinner";
 
+const ModalMainContainer = styled.div`
+  min-height: 10rem;
+  width: 20rem;
+  background-color: ${(props) => props.theme.primary};
+  border-radius: 8px;
+  padding: 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-self: flex-end;
+`;
+
+const StyledButton = styled(Button)`
+  background-color: ${(props) => props.theme.primary};
+  color: ${(props) => props.theme.secondary};
+  border: 1.5px solid ${(props) => props.theme.secondary};
+  border-radius: 6px;
+  height: 1.6rem;
+  padding: 0.2rem 0.6rem;
+`;
+
+const StyledActiveButton = styled(StyledButton)`
+  background-color: ${(props) => props.theme.secondary};
+  color: ${(props) => props.theme.primary};
+  margin-left: 0.4rem;
+`;
+
+const StyledP = styled.p`
+  margin: 1rem 0;
+`;
+
 const StyledFilter = styled.div`
-  height: 2rem;
   min-width: 14rem;
-  color: ${(props) => props.theme.secondaryText};
+  height: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const FilterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  color: ${(props) => props.theme.secondaryText};
   cursor: pointer;
+  margin: 0.4rem 0;
 `;
 
 const MainContainer = styled.div`
@@ -38,6 +83,13 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 1rem 0;
+`;
+
+const WrapperPositions = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 3rem;
+  border-top: 2px solid ${(props) => props.theme.secondaryText};
 `;
 
 const ProfileImage = styled.div`
@@ -89,11 +141,11 @@ const CountryWrapper = styled.div`
 `;
 
 const StyledTextarea = styled(Textarea)`
-  width: 14rem;
-  min-height: 6rem;
+  width: 100%;
+  min-height: 8rem;
   background-color: ${(props) => props.theme.secondaryLight};
-  margin-left: 3rem;
   padding: 0.4rem 0.4rem;
+  margin-top: 1rem;
   overflow-y: auto;
 `;
 
@@ -106,6 +158,8 @@ const PersonDetails = () => {
   const newDate = new Date(person?.createdAt || null);
   const formatedDate = format(newDate, "MMMM dd, yyyy");
   const loading = useSelector((state) => state.people.loading);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [status, setStatus] = React.useState("");
 
   const getPopoverContent = () => {
     return (
@@ -113,12 +167,8 @@ const PersonDetails = () => {
         {statuses?.map((status) => (
           <PopoverItem
             onClick={() => {
-              dispatch(
-                changeApplicantStatus({
-                  personId: person?.person?.id,
-                  status: status,
-                })
-              );
+              setStatus(status);
+              setIsModalOpen(!isModalOpen);
               setIsOpen(false);
             }}
           >
@@ -179,12 +229,12 @@ const PersonDetails = () => {
               <span>Submitted Application: </span>
               <StyledSpan>{formatedDate}</StyledSpan>
             </Wrapper>
-            <Wrapper>
+            <WrapperPositions>
               <span>Previous Positions: </span>
               <StyledTextarea resize="0">
                 {person?.previousPositions}
               </StyledTextarea>
-            </Wrapper>
+            </WrapperPositions>
           </Container>
           <Popover
             isOpen={isOpen}
@@ -199,10 +249,41 @@ const PersonDetails = () => {
                 setIsOpen(!isOpen);
               }}
             >
-              <span>{person?.status?.name}</span>
-              <ChevronDown size="1rem" />
+              <StyledSpan>Current Status</StyledSpan>
+              <FilterWrapper>
+                <span>{person?.status?.name}</span>
+                <ChevronDown size="1rem" />
+              </FilterWrapper>
             </StyledFilter>
           </Popover>
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => {
+              setIsModalOpen(false);
+            }}
+          >
+            <ModalMainContainer>
+              <StyledP>{`Are you sure you want to change applicant status to ${status?.name}?`}</StyledP>
+              <ButtonWrapper>
+                <StyledButton onClick={() => setIsModalOpen(false)}>
+                  Cancel
+                </StyledButton>
+                <StyledActiveButton
+                  onClick={() => {
+                    dispatch(
+                      changeApplicantStatus({
+                        personId: person?.person?.id,
+                        status: status,
+                      })
+                    );
+                    setIsModalOpen(false);
+                  }}
+                >
+                  Change
+                </StyledActiveButton>
+              </ButtonWrapper>
+            </ModalMainContainer>
+          </Modal>
         </MainContainer>
       )}
     </>
