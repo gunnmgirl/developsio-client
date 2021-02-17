@@ -178,6 +178,24 @@ export default (state = INITIAL_STATE, action) => {
         loadingImage: true,
         error: false,
       };
+    case "CHANGE_PASSWORD_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "CHANGE_PASSWORD_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+      };
+    case "CHANGE_PASSWORD_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
     default:
       return { ...state };
   }

@@ -105,6 +105,14 @@ const Header = () => {
         >
           Edit Profile
         </PopoverItem>
+        <PopoverItem
+          onClick={() => {
+            history.push(`/change-password/${meId}`);
+            setIsOpen(false);
+          }}
+        >
+          Change Password
+        </PopoverItem>
       </PopoverMainContainer>
     );
   };

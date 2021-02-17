@@ -1,7 +1,7 @@
 import request from "../../../http";
 import notify from "../../../notifications";
 import { PEOPLE_LIMIT } from "../constants";
-import { loginSuccess } from "../../auth/actions/authActions";
+import { loginSuccess, logout } from "../../auth/actions/authActions";
 
 export const getApplicants = (payload) => {
   const { page } = payload;
@@ -310,6 +310,49 @@ const uploadApplicantImageFailure = () => {
 const uploadApplicantImageSuccess = (payload) => {
   return {
     type: "UPLOAD_APPLICANT_IMAGE_SUCCESS",
-    payload,
+  };
+};
+
+export const changePassword = (payload, meta) => {
+  const { formik, resetForm } = meta;
+  return async (dispatch) => {
+    dispatch(changePasswordRequest());
+    try {
+      const response = await request.patch(
+        `/person/${payload.personId}`,
+        payload.newValues
+      );
+      formik.setSubmitting(false);
+      resetForm({});
+      dispatch(changePasswordSuccess());
+      notify("Successfully changed password.", "success");
+      dispatch(logout());
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        formik.setFieldError("currentPassword", error.data, false);
+        formik.setSubmitting(false);
+      }
+      dispatch(changePasswordFailure());
+    }
+  };
+};
+
+const changePasswordRequest = () => {
+  return {
+    type: "CHANGE_PASSWORD_REQUEST",
+  };
+};
+
+const changePasswordFailure = () => {
+  return {
+    type: "CHANGE_PASSWORD_FAILURE",
+  };
+};
+
+const changePasswordSuccess = () => {
+  return {
+    type: "CHANGE_PASSWORD_SUCCESS",
   };
 };
