@@ -306,10 +306,12 @@ const People = () => {
   };
 
   const getFilterPopoverContent = () => {
+    const newPositions = [{ name: "All Positions" }, ...positions];
+
     return (
       <PopoverMainContainer>
-        {positions
-          ? positions.map((position) => (
+        {newPositions
+          ? newPositions.map((position) => (
               <PopoverItem
                 onClick={() => {
                   if (position.name === `All Positions`) {

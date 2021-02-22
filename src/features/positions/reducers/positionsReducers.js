@@ -2,6 +2,7 @@ const INITIAL_STATE = {
   loading: false,
   error: false,
   positions: [],
+  totalCount: 0,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -17,9 +18,30 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         loading: false,
         error: false,
-        positions: [{ name: "All Positions" }, ...action.payload],
+        positions: action.payload,
+        totalCount: action.payload?.length || 0,
       };
     case "GET_POSITIONS_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case "ADD_POSITION_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "ADD_POSITION_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        positions: [action.payload, ...state.positions],
+        totalCount: state.totalCount + 1,
+      };
+    case "ADD_POSITION_REQUEST":
       return {
         ...state,
         loading: true,
