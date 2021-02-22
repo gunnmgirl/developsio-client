@@ -36,3 +36,39 @@ const getPositionsSuccess = (payload) => {
     payload,
   };
 };
+
+export const addPosition = (payload) => {
+  return async (dispatch) => {
+    dispatch(addPositionRequest());
+    try {
+      const response = await request.post(`/position/`, payload);
+      dispatch(addPositionSuccess(response.data));
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        notify(error.data, "error");
+      }
+      dispatch(addPositionFailure());
+    }
+  };
+};
+
+const addPositionRequest = () => {
+  return {
+    type: "ADD_POSITION_REQUEST",
+  };
+};
+
+const addPositionFailure = () => {
+  return {
+    type: "ADD_POSITION_FAILURE",
+  };
+};
+
+const addPositionSuccess = (payload) => {
+  return {
+    type: "ADD_POSITION_SUCCESS",
+    payload,
+  };
+};
