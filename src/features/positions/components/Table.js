@@ -1,10 +1,10 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { useTable, useFlexLayout, usePagination } from "react-table";
+import { useTable, useFlexLayout } from "react-table";
 
 const Container = styled.div`
-  height: 100%;
+  color: ${(props) => props.theme.onPrimary};
+  background-color: ${(props) => props.theme.primary};
 `;
 
 const Head = styled.div`
@@ -21,7 +21,7 @@ const Header = styled.div``;
 const Data = styled.div``;
 
 const DataRow = styled.div`
-  border: 1px solid ${(props) => props.theme.onPrimary};
+  border: 1px solid ${(props) => props.theme.border};
   border-left: 0;
   border-right: 0;
   background-color: ${(props) => props.theme.secondaryLight};

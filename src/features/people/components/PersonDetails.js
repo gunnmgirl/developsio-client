@@ -33,7 +33,8 @@ const StyledInput = styled(Input)`
 const ModalMainContainer = styled.div`
   min-height: 10rem;
   width: 20rem;
-  background-color: ${(props) => props.theme.primary};
+  background-color: ${(props) => props.theme.secondaryLight};
+  color: ${(props) => props.theme.onPrimary};
   border-radius: 8px;
   padding: 1rem 1rem;
   display: flex;
@@ -55,7 +56,7 @@ const ColumnWrapper = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  background-color: ${(props) => props.theme.primary};
+  background-color: ${(props) => props.theme.secondaryLight};
   color: ${(props) => props.theme.secondary};
   border: 1.5px solid ${(props) => props.theme.secondary};
   border-radius: 6px;
@@ -94,6 +95,8 @@ const MainContainer = styled.div`
   display: flex;
   padding: 3rem 6rem;
   justify-content: space-between;
+  color: ${(props) => props.theme.onPrimary};
+  background-color: ${(props) => props.theme.primary};
 `;
 
 const Container = styled.div`
@@ -167,6 +170,8 @@ const StyledTextarea = styled(Textarea)`
   width: 100%;
   min-height: 8rem;
   background-color: ${(props) => props.theme.secondaryLight};
+  color: ${(props) => props.theme.onPrimary};
+  font-family: "Roboto";
   padding: 0.4rem 0.4rem;
   margin-top: 1rem;
   overflow-y: auto;
@@ -304,7 +309,7 @@ const PersonDetails = () => {
             </Wrapper>
             <WrapperPositions>
               <span>Previous Positions: </span>
-              <StyledTextarea resize="0">
+              <StyledTextarea resize="0" disabled>
                 {person?.previousPositions}
               </StyledTextarea>
             </WrapperPositions>

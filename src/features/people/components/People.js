@@ -23,7 +23,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  background-color: ${(props) => props.theme.primary};
+  background-color: ${(props) => props.theme.secondaryLight};
   color: ${(props) => props.theme.secondary};
   border: 1.5px solid ${(props) => props.theme.secondary};
   border-radius: 6px;
@@ -55,7 +55,7 @@ const ProfileImage = styled.div`
   background-size: cover;
   background-position: center;
   background-color: ${(props) => props.theme.primary};
-  border: 1px solid ${(props) => props.theme.onPrimary};
+  border: 1px solid ${(props) => props.theme.border};
   border-radius: 999px;
 `;
 
@@ -121,7 +121,8 @@ const StyledFilter = styled(StyledSort)`
 const ModalMainContainer = styled.div`
   min-height: 10rem;
   width: 20rem;
-  background-color: ${(props) => props.theme.primary};
+  background-color: ${(props) => props.theme.secondaryLight};
+  color: ${(props) => props.theme.onPrimary};
   border-radius: 8px;
   padding: 1rem 1rem;
   display: flex;
