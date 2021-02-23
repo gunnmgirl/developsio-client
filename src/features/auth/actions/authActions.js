@@ -18,7 +18,7 @@ export const login = (payload, meta) => {
       } else {
         formik.setFieldError("password", error.data);
       }
-      dispatch(loginFailure);
+      dispatch(loginFailure());
     }
   };
 };
