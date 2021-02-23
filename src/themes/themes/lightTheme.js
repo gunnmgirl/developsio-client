@@ -11,6 +11,8 @@ const lightTheme = {
   ternaryLight: "#4d4d4d",
   border: "#000000",
   modalPrimary: "#ffffff",
+  success: "#32a852",
+  error: "#a83232",
 };
 
 export default lightTheme;

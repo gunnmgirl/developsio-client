@@ -11,6 +11,8 @@ const darkTheme = {
   ternaryLight: "#4e4e4e",
   border: "#363636",
   modalPrimary: "#363636",
+  success: "#0b6119",
+  error: "#610b0b",
 };
 
 export default darkTheme;
