@@ -23,7 +23,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  background-color: ${(props) => props.theme.secondaryLight};
+  background-color: ${(props) => props.theme.modalPrimary};
   color: ${(props) => props.theme.secondary};
   border: 1.5px solid ${(props) => props.theme.secondary};
   border-radius: 6px;
@@ -134,7 +134,7 @@ const StyledFilter = styled(StyledSort)`
 const ModalMainContainer = styled.div`
   min-height: 10rem;
   width: 20rem;
-  background-color: ${(props) => props.theme.secondaryLight};
+  background-color: ${(props) => props.theme.modalPrimary};
   color: ${(props) => props.theme.onPrimary};
   border-radius: 8px;
   padding: 1rem 1rem;
