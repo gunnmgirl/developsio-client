@@ -72,3 +72,43 @@ const addPositionSuccess = (payload) => {
     payload,
   };
 };
+
+export const editPosition = (payload) => {
+  return async (dispatch) => {
+    dispatch(editPositionRequest());
+    try {
+      const response = await request.patch(
+        `/position/${payload.positionId}`,
+        payload.values
+      );
+      dispatch(editPositionSuccess(response.data));
+      notify("Successfully edited job position", "success");
+    } catch (error) {
+      if (!error || !error.data) {
+        notify("Something went wrong, please try again later.", "error");
+      } else {
+        notify(error.data, "error");
+      }
+      dispatch(editPositionFailure());
+    }
+  };
+};
+
+const editPositionRequest = () => {
+  return {
+    type: "EDIT_POSITION_REQUEST",
+  };
+};
+
+const editPositionFailure = () => {
+  return {
+    type: "EDIT_POSITION_FAILURE",
+  };
+};
+
+const editPositionSuccess = (payload) => {
+  return {
+    type: "EDIT_POSITION_SUCCESS",
+    payload,
+  };
+};

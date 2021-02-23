@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Table from "./Table";
 import { getPositions } from "../actions/positionsActions";
-import { HelpCircle, PlusCircle } from "react-feather";
+import { Edit, HelpCircle, PlusCircle } from "react-feather";
 import Spinner from "../../components/Spinner";
 import AddPositionModal from "./AddPositionModal";
 
@@ -87,8 +87,33 @@ const Positions = () => {
               </PopoverMainContainer>
             )}
           >
-            <HelpCircle onClick={() => setIsOpen(!isOpen)} />
+            <HelpCircle cursor="pointer" onClick={() => setIsOpen(!isOpen)} />
           </Popover>
+        );
+      },
+    },
+
+    {
+      Header: "",
+      accessor: "edit",
+      width: 4,
+      Cell: (props) => {
+        const [isEditModalOpen, setIsEditModalOpen] = React.useState(false);
+        return (
+          <>
+            <Edit
+              cursor="pointer"
+              onClick={() => setIsEditModalOpen(!isEditModalOpen)}
+            />
+            <AddPositionModal
+              isOpen={isEditModalOpen}
+              setIsOpen={setIsEditModalOpen}
+              positionId={props.value}
+              name={props?.cell?.row?.original?.position || ""}
+              details={props?.cell?.row?.original?.details || ""}
+              actionButtonText="Edit Job Position"
+            />
+          </>
         );
       },
     },
@@ -102,6 +127,7 @@ const Positions = () => {
         position: position.name,
         date: formatedDate,
         details: position.details,
+        edit: position.id,
       };
     });
   });

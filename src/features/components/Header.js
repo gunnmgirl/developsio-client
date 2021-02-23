@@ -44,7 +44,8 @@ const StyledNavLink = styled(NavLink)`
   &.active {
     color: ${(props) =>
       props.noactivestyle ? props.theme.onPrimary : props.theme.onActive};
-    background-color: ${(props) => props.theme.primary};
+    background-color: ${(props) =>
+      props.noactivestyle ? "transparent" : props.theme.primary};
   }
 `;
 
@@ -122,7 +123,9 @@ const Header = () => {
   return (
     <MainContainer>
       <Wrapper>
-        <LogoIcon />
+        <StyledNavLink to="/people" noactivestyle>
+          <LogoIcon />
+        </StyledNavLink>
         <StyledNavLink
           to="/people"
           isActive={() => ["/people", "/"].includes(pathname)}

@@ -4,7 +4,7 @@ import format from "date-fns/format";
 import styled from "styled-components";
 import { Popover } from "@malcodeman/react-popover";
 import { Modal } from "@malcodeman/react-modal";
-import { ChevronDown, AlignCenter, MoreHorizontal } from "react-feather";
+import { ChevronDown, AlignCenter, MoreHorizontal, User } from "react-feather";
 
 import {
   getApplicants,
@@ -55,6 +55,19 @@ const ProfileImage = styled.div`
   background-size: cover;
   background-position: center;
   background-color: ${(props) => props.theme.primary};
+  color: ${(props) => props.theme.onPrimary};
+  border: 1px solid ${(props) => props.theme.border};
+  border-radius: 999px;
+`;
+
+const UserIcon = styled(User)`
+  height: 2.6rem;
+  width: 2.6rem;
+  stroke-width: 1;
+  display: flex;
+  align-items: center;
+  background-color: ${(props) => props.theme.modalPrimary};
+  color: ${(props) => props.theme.onPrimary};
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 999px;
 `;
@@ -266,8 +279,10 @@ const People = () => {
       const newDate = new Date(person.createdAt);
       const formatedDate = format(newDate, "MMMM dd, yyyy");
       return {
-        imageUrl: (
+        imageUrl: person.person.imageUrl ? (
           <ProfileImage imageUrl={person.person.imageUrl}></ProfileImage>
+        ) : (
+          <UserIcon />
         ),
         name: `${person.person.firstName} ${person.person.lastName}`,
         number: person.phoneNumber,
