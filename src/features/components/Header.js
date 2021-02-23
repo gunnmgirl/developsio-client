@@ -1,13 +1,14 @@
 import React from "react";
 import { Users, Book, Monitor, ChevronDown } from "react-feather";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Popover } from "@malcodeman/react-popover";
 
 import { logout } from "../auth/actions/authActions";
 import LogoIcon from "../../icons/LogoIcon";
 import history from "../../routing/history";
+import ToggleTheme from "./ToggleTheme";
 
 const AdminImage = styled.div`
   height: 3rem;
@@ -19,7 +20,7 @@ const AdminImage = styled.div`
   background-size: cover;
   background-position: center;
   background-color: ${(props) => props.theme.primary};
-  border: 1px solid ${(props) => props.theme.onPrimary};
+  border: 1px solid ${(props) => props.theme.border};
   border-radius: 999px;
 `;
 
@@ -28,7 +29,7 @@ const MainContainer = styled.div`
   justify-content: space-between;
   padding: 0 6rem;
   min-height: 4rem;
-  background: ${(props) => props.theme.secondaryLight};
+  background-color: ${(props) => props.theme.secondaryLight};
   align-items: center;
 `;
 
@@ -86,6 +87,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = React.useState(false);
   const meId = useSelector((state) => state.auth.me.id);
+  const { pathname } = useLocation();
 
   const getPopoverContent = () => {
     return (
@@ -121,7 +123,10 @@ const Header = () => {
     <MainContainer>
       <Wrapper>
         <LogoIcon />
-        <StyledNavLink to="/people">
+        <StyledNavLink
+          to="/people"
+          isActive={() => ["/people", "/"].includes(pathname)}
+        >
           <Users />
           <StyledSpan>People</StyledSpan>
         </StyledNavLink>
@@ -135,6 +140,7 @@ const Header = () => {
         </StyledNavLink>
       </Wrapper>
       <Wrapper>
+        <ToggleTheme />
         <AdminImage imageUrl={imageUrl}></AdminImage>
         <Popover
           isOpen={isOpen}

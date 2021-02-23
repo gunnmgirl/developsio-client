@@ -41,6 +41,8 @@ const Container = styled.div`
 
 const MainContainer = styled.div`
   flex-grow: 1;
+  color: ${(props) => props.theme.onPrimary};
+  background-color: ${(props) => props.theme.primary};
 `;
 
 const PopoverMainContainer = styled.div`

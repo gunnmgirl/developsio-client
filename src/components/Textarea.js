@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const StyledTextarea = styled.textarea`
   resize: ${(props) => props.resize && "none"};
-  border: 1px solid ${(props) => props.theme.onPrimary};
+  border: 1px solid ${(props) => props.theme.border};
   border-radius: 4px;
 `;
 

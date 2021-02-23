@@ -44,7 +44,7 @@ const StyledForm = styled.div`
 
 const StyledInput = styled(Input)`
   border: 0;
-  border: 1px solid ${(props) => props.theme.onPrimary};
+  border: 1px solid ${(props) => props.theme.border};
   border-radius: 6px;
   background-color: ${(props) => props.theme.primary};
   width: auto;

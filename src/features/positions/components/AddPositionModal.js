@@ -17,7 +17,8 @@ const ModalMainContainer = styled.div`
   flex-direction: column;
   min-height: 20rem;
   width: 25rem;
-  background-color: ${(props) => props.theme.primary};
+  background-color: ${(props) => props.theme.secondaryLight};
+  color: ${(props) => props.theme.onPrimary};
   border-radius: 8px;
   padding: 1rem 1rem;
 `;
@@ -37,17 +38,18 @@ const StyledInput = styled(Input)`
   border: 0;
   border-bottom: 1px solid ${(props) => props.theme.onPrimary};
   border-radius: 0;
-  background-color: ${(props) => props.theme.primary};
+  background-color: ${(props) => props.theme.secondaryLight};
   width: auto;
   margin: 0;
   padding-left: 0.6rem;
 `;
 
 const StyledTextarea = styled(Textarea)`
-  border: 1px solid ${(props) => props.theme.onPrimary};
+  border: 1px solid ${(props) => props.theme.border};
   border-radius: 4px;
   height: 8rem;
-  background-color: ${(props) => props.theme.secondaryLight};
+  background-color: ${(props) => props.theme.ternary};
+  color: ${(props) => props.theme.onPrimary};
   margin-bottom: 1rem;
   font-family: "Roboto", sans-serif;
   padding: 0.4rem 0.4rem;

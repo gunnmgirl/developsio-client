@@ -5,7 +5,7 @@ import notify from "../../../notifications";
 export const login = (payload, meta) => {
   const { formik } = meta;
   return async (dispatch) => {
-    dispatch(loginRequest);
+    dispatch(loginRequest());
     try {
       const response = await request.post(`/auth/login`, payload);
       const { token, me } = response.data;

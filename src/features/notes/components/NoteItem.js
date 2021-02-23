@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import AddNoteModal from "./AddNoteModal";
 
 const MainContainer = styled.div`
-  border: 1px solid ${(props) => props.theme.onPrimary};
+  border: 1px solid ${(props) => props.theme.border};
   border-radius: 8px;
   background-color: ${(props) => props.theme.secondaryLight};
 `;

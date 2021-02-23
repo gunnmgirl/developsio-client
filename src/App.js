@@ -8,7 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 import history from "./routing/history";
 import GlobalStyle from "./GlobalStyle";
-import defaultTheme from "./themes/defaultTheme";
 import Login from "./features/auth/components/Login";
 import People from "./features/people/components/People";
 import Notes from "./features/notes/components/Notes";
@@ -17,17 +16,22 @@ import Header from "./features/components/Header";
 import PersonDetails from "./features/people/components/PersonDetails";
 import EditProfile from "./features/people/components/EditProfile";
 import ChangePassword from "./features/people/components/ChangePassword";
+import themes from "./themes";
 
 const Container = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: ${(props) => props.theme.primary};
+  color: ${(props) => props.theme.onPrimary};
 `;
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const currentTheme = useSelector((state) => state.theme.theme);
+  const theme = currentTheme === "dark" ? themes.dark : themes.light;
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={theme}>
       <GlobalStyle />
       <ToastContainer
         position="top-center"
@@ -51,6 +55,7 @@ function App() {
               <Route path="/people" component={People} />
               <Route path="/notes" component={Notes} />
               <Route path="/positions" component={Positions} />
+              <Route path="/" exact component={People} />
             </Switch>
           </Container>
         ) : (
