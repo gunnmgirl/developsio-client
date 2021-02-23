@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { X } from "react-feather";
 
-import { addPosition } from "../actions/positionsActions";
+import { addPosition, editPosition } from "../actions/positionsActions";
 import FormControl from "../../../components/FormControl";
 import Input from "../../../components/Input";
 import Textarea from "../../../components/Textarea";
@@ -67,15 +67,26 @@ const StyledX = styled(X)`
   cursor: pointer;
 `;
 
-const AddPositionModal = ({ isOpen, setIsOpen }) => {
+const AddPositionModal = ({
+  isOpen,
+  setIsOpen,
+  name = "",
+  details = "",
+  positionId = 0,
+  actionButtonText = "Add Position",
+}) => {
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
-      name: "",
-      details: "",
+      name: name,
+      details: details,
     },
     onSubmit: (values, { resetForm }) => {
-      dispatch(addPosition(values));
+      if (positionId) {
+        dispatch(editPosition({ values, positionId }));
+      } else {
+        dispatch(addPosition(values));
+      }
       resetForm({});
       setIsOpen(false);
     },
@@ -125,7 +136,7 @@ const AddPositionModal = ({ isOpen, setIsOpen }) => {
             }}
             shouldFitContainer
           >
-            Add Position
+            {actionButtonText}
           </StyledActiveButton>
         </StyledForm>
       </ModalMainContainer>

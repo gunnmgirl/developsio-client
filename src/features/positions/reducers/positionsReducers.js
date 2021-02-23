@@ -47,6 +47,30 @@ export default (state = INITIAL_STATE, action) => {
         loading: true,
         error: false,
       };
+    case "EDIT_POSITION_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case "EDIT_POSITION_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        positions: state.positions.map((position) => {
+          if (position.id === action.payload.id) {
+            position = action.payload;
+          }
+          return position;
+        }),
+      };
+    case "EDIT_POSITION_REQUEST":
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
     default:
       return { ...state };
   }

@@ -310,6 +310,7 @@ const uploadApplicantImageFailure = () => {
 const uploadApplicantImageSuccess = (payload) => {
   return {
     type: "UPLOAD_APPLICANT_IMAGE_SUCCESS",
+    payload,
   };
 };
 
