@@ -18,6 +18,21 @@ import EditProfile from "./features/people/components/EditProfile";
 import ChangePassword from "./features/people/components/ChangePassword";
 import themes from "./themes";
 
+const StyledToast = styled(ToastContainer).attrs({
+  className: "toast-container",
+  toastClassName: "toast",
+  bodyClassName: "body",
+  progressClassName: "progress",
+})`
+  .Toastify__toast--success {
+    background-color: ${(props) => props.theme.success};
+  }
+
+  .Toastify__toast--error {
+    background-color: ${(props) => props.theme.error};
+  }
+`;
+
 const Container = styled.div`
   height: 100vh;
   display: flex;
@@ -33,7 +48,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <ToastContainer
+      <StyledToast
         position="top-center"
         autoClose={5000}
         newestOnTop={false}

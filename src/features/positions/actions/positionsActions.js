@@ -43,6 +43,7 @@ export const addPosition = (payload) => {
     try {
       const response = await request.post(`/position/`, payload);
       dispatch(addPositionSuccess(response.data));
+      notify("Successfully added a new job position", "success");
     } catch (error) {
       if (!error || !error.data) {
         notify("Something went wrong, please try again later.", "error");
