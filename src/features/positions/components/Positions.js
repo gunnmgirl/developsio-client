@@ -144,7 +144,10 @@ const Positions = () => {
         <>
           <Container>
             <StyledTotalCount>{`${totalCount} Total`}</StyledTotalCount>
-            <Wrapper onClick={() => setIsModalOpen(!isModalOpen)}>
+            <Wrapper
+              onClick={() => setIsModalOpen(!isModalOpen)}
+              data-cy="add-job-position"
+            >
               <StyledPlusCircle />
               <StyledSpan>Add Job Position</StyledSpan>
             </Wrapper>

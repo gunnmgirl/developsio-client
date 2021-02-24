@@ -205,8 +205,9 @@ const People = () => {
                 isOpen={isMoreOpen}
                 onClickOutside={() => setIsMoreOpen(false)}
                 content={() => (
-                  <PopoverMainContainer>
+                  <PopoverMainContainer data-cy="people-popover-main-container">
                     <PopoverItem
+                      data-cy="people-popover-item-view"
                       onClick={() => history.push(`/people/${props.value}`)}
                     >
                       View
@@ -234,6 +235,7 @@ const People = () => {
                 )}
               >
                 <MoreHorizontal
+                  data-cy="peope-more-horizontal-icon"
                   onClick={() => {
                     setIsMoreOpen(!isMoreOpen);
                   }}
@@ -385,7 +387,7 @@ const People = () => {
   }, [page, order, filter, status]);
 
   return (
-    <MainContainer>
+    <MainContainer data-cy="people-main-container">
       <Wrapper>
         <StyledTotalCount>{`${totalCount} Total`}</StyledTotalCount>
         <Container>

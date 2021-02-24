@@ -133,11 +133,11 @@ const Header = () => {
           <Users />
           <StyledSpan>People</StyledSpan>
         </StyledNavLink>
-        <StyledNavLink to="/notes">
+        <StyledNavLink to="/notes" data-cy="notes-nav-link">
           <Book />
           <StyledSpan>Notes</StyledSpan>
         </StyledNavLink>
-        <StyledNavLink to="/positions">
+        <StyledNavLink to="/positions" data-cy="positions-nav-link">
           <Monitor />
           <StyledSpan>Positions</StyledSpan>
         </StyledNavLink>

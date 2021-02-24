@@ -74,6 +74,7 @@ const Login = () => {
     },
     onSubmit: (values) => {
       const hashedPassword = hash(values.password);
+      console.log(hashedPassword);
       dispatch(
         login({ email: values.email, password: hashedPassword }, { formik })
       );
@@ -97,6 +98,7 @@ const Login = () => {
               <StyledInput
                 name="email"
                 type="text"
+                data-cy="login-email-input"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -108,6 +110,7 @@ const Login = () => {
               <StyledInput
                 name="password"
                 type="password"
+                data-cy="login-password-input"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -115,7 +118,11 @@ const Login = () => {
             {loading ? (
               <Spinner />
             ) : (
-              <Button onClick={formik.handleSubmit} shouldFitContainer>
+              <Button
+                data-cy="login-button"
+                onClick={formik.handleSubmit}
+                shouldFitContainer
+              >
                 Log in
               </Button>
             )}

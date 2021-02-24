@@ -126,7 +126,7 @@ const AddNoteModal = ({
         formik.resetForm(emptyState);
       }}
     >
-      <ModalMainContainer>
+      <ModalMainContainer data-cy="add-new-note-main-container">
         <StyledX
           onClick={() => {
             setIsOpen(false);
@@ -139,6 +139,7 @@ const AddNoteModal = ({
             caption={formik.touched.title && formik.errors.title}
           >
             <StyledInput
+              data-cy="add-new-note-title-input"
               name="title"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -149,6 +150,7 @@ const AddNoteModal = ({
           <FormControl label="Note">
             <StyledTextarea
               name="body"
+              data-cy="add-new-note-body-input"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               resize="0"
@@ -189,6 +191,7 @@ const AddNoteModal = ({
             </StyledButton>
             {!disabled && (
               <StyledActiveButton
+                data-cy="add-new-note-button"
                 onClick={() => {
                   formik.handleSubmit();
                 }}
