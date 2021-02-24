@@ -74,7 +74,6 @@ const Login = () => {
     },
     onSubmit: (values) => {
       const hashedPassword = hash(values.password);
-      console.log(hashedPassword);
       dispatch(
         login({ email: values.email, password: hashedPassword }, { formik })
       );

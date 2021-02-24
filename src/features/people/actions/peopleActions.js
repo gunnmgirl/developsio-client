@@ -35,7 +35,7 @@ const getApplicantsFailure = () => {
   };
 };
 
-const getApplicantsSuccess = (payload) => {
+export const getApplicantsSuccess = (payload) => {
   return {
     type: "GET_APPLICANTS_SUCCESS",
     payload,

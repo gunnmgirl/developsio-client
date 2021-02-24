@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { useTable, useFlexLayout, usePagination } from "react-table";
 import { ArrowLeftCircle, ArrowRightCircle } from "react-feather";
+import { useTrail, animated } from "react-spring";
 
 import Spinner from "../../components/Spinner";
 
@@ -48,7 +49,7 @@ const Header = styled.div``;
 
 const Data = styled.div``;
 
-const DataRow = styled.div`
+const DataRow = styled(animated.div)`
   border: 1px solid ${(props) => props.theme.border};
   border-left: 0;
   border-right: 0;
@@ -94,6 +95,11 @@ function Table(props) {
     usePagination
   );
 
+  const trail = useTrail(page.length, {
+    from: { opacity: 0, transform: "translate3d(0,-40px,0)" },
+    to: { opacity: 1, transform: "translate3d(0,0px,0)" },
+  });
+
   React.useEffect(() => {
     if (isReset) {
       gotoPage(0);
@@ -120,10 +126,14 @@ function Table(props) {
             ))}
           </Head>
           <Body {...getTableBodyProps()}>
-            {page.map((row) => {
+            {trail.map((props, index) => {
+              const row = page[index];
               prepareRow(row);
               return (
-                <DataRow {...row.getRowProps()}>
+                <DataRow
+                  {...row.getRowProps()}
+                  style={{ ...row.getRowProps().style, ...props }}
+                >
                   {row.cells.map((cell) => {
                     return (
                       <>

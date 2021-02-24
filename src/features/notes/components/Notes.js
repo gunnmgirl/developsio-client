@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Popover } from "@malcodeman/react-popover";
+import { useTrail, animated } from "react-spring";
+
 import {
   ArrowLeftCircle,
   ArrowRightCircle,
@@ -10,7 +12,7 @@ import {
   AlignCenter,
 } from "react-feather";
 
-import { getNotes } from "../actions/notesActions";
+import { getNotes, getNotesSuccess } from "../actions/notesActions";
 import NoteItem from "./NoteItem";
 import AddNoteModal from "./AddNoteModal";
 import Spinner from "../../components/Spinner";
@@ -132,6 +134,11 @@ const Notes = () => {
   const [order, setOrder] = React.useState(sortBy[0]);
   const [filter, setFilter] = React.useState(filterOptions[0]);
 
+  const trail = useTrail(notes.length, {
+    from: { opacity: 0, transform: "translate3d(0,-40px,0)" },
+    to: { opacity: 1, transform: "translate3d(0,0px,0)" },
+  });
+
   const previousPage = () => {
     if (page > 0) {
       setPage(page - 1);
@@ -187,6 +194,9 @@ const Notes = () => {
 
   React.useEffect(() => {
     dispatch(getNotes({ page, order: order.value, filter: filter.value }));
+    return () => {
+      dispatch(getNotesSuccess({ notes: [], count: { count: 0 } }));
+    };
   }, [page, order.value, filter]);
 
   return (
@@ -227,8 +237,10 @@ const Notes = () => {
             </Popover>
           </RowContainer>
           <Container>
-            {notes.map((note) => (
-              <NoteItem note={note} />
+            {trail.map((props, index) => (
+              <animated.div style={props}>
+                <NoteItem note={notes[index]} />
+              </animated.div>
             ))}
           </Container>
           {notes?.length > 0 ? (

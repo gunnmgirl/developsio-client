@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useTable, useFlexLayout } from "react-table";
+import { useTrail, animated } from "react-spring";
 
 const Container = styled.div`
   color: ${(props) => props.theme.onPrimary};
@@ -20,7 +21,7 @@ const Header = styled.div``;
 
 const Data = styled.div``;
 
-const DataRow = styled.div`
+const DataRow = styled(animated.div)`
   border: 1px solid ${(props) => props.theme.border};
   border-left: 0;
   border-right: 0;
@@ -47,6 +48,11 @@ function Table(props) {
     useFlexLayout
   );
 
+  const trail = useTrail(rows.length, {
+    from: { opacity: 0, transform: "translate3d(0,-40px,0)" },
+    to: { opacity: 1, transform: "translate3d(0,0px,0)" },
+  });
+
   return (
     <Container>
       <div {...getTableProps()}>
@@ -62,12 +68,15 @@ function Table(props) {
           ))}
         </Head>
         <Body {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {trail.map((props, index) => {
+            const row = rows[index];
             prepareRow(row);
             return (
               <DataRow
                 {...row.getRowProps()}
                 style={{
+                  ...row.getRowProps().style,
+                  ...props,
                   display: "flex",
                   justifyContent: "space-between",
                 }}

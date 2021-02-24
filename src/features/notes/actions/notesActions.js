@@ -33,7 +33,7 @@ const getNotesFailure = () => {
   };
 };
 
-const getNotesSuccess = (payload) => {
+export const getNotesSuccess = (payload) => {
   return {
     type: "GET_NOTES_SUCCESS",
     payload,
