@@ -19,7 +19,9 @@ const FormControl = (props) => {
     <Container>
       {label && <label>{label}</label>}
       {React.cloneElement(children)}
-      {caption && <StyledCaption>{caption}</StyledCaption>}
+      {caption && (
+        <StyledCaption data-cy="error-message">{caption}</StyledCaption>
+      )}
     </Container>
   );
 };

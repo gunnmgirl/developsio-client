@@ -131,6 +131,7 @@ const AddPositionModal = ({
             />
           </FormControl>
           <StyledActiveButton
+            data-cy="add-position-button"
             onClick={() => {
               formik.handleSubmit();
             }}

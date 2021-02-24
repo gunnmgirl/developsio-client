@@ -196,7 +196,10 @@ const Notes = () => {
       ) : (
         <>
           <RowContainer>
-            <Wrapper onClick={() => setIsModalOpen(!isModalOpen)}>
+            <Wrapper
+              onClick={() => setIsModalOpen(!isModalOpen)}
+              data-cy="add-new-note"
+            >
               <StyledPlusCircle />
               <StyledSpan>Add New Note</StyledSpan>
             </Wrapper>
