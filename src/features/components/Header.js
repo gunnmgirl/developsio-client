@@ -94,6 +94,7 @@ const Header = () => {
     return (
       <PopoverMainContainer>
         <PopoverItem
+          data-cy="logout-popover-item"
           onClick={() => {
             dispatch(logout());
           }}
@@ -150,7 +151,10 @@ const Header = () => {
           content={getPopoverContent}
           onClickOutside={() => setIsOpen(false)}
         >
-          <StyledChevronDown onClick={() => setIsOpen(!isOpen)} />
+          <StyledChevronDown
+            onClick={() => setIsOpen(!isOpen)}
+            data-cy="header-chevron-down"
+          />
         </Popover>
       </Wrapper>
     </MainContainer>

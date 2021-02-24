@@ -1,6 +1,5 @@
 describe("Adding new position", () => {
   beforeEach(() => {
-    s;
     cy.login();
     cy.get("[data-cy=positions-nav-link]").click();
   });
