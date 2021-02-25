@@ -10,6 +10,7 @@ import {
   getApplicants,
   deleteApplicant,
   restoreApplicant,
+  getApplicantsSuccess,
 } from "../actions/peopleActions";
 import { getPositions } from "../../positions/actions/positionsActions";
 import { getStatuses } from "../../statuses/actions/statusesActions";
@@ -92,6 +93,7 @@ const StyledSort = styled.div`
 `;
 
 const PopoverMainContainer = styled.div`
+  z-index: 1;
   display: flex;
   flex-direction: column;
   background-color: ${(props) => props.theme.ternary};
@@ -384,6 +386,9 @@ const People = () => {
         statusId: status?.id || null,
       })
     );
+    return () => {
+      dispatch(getApplicantsSuccess({ applicants: [], count: 0 }));
+    };
   }, [page, order, filter, status]);
 
   return (
