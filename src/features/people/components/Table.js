@@ -10,6 +10,7 @@ import Spinner from "../../components/Spinner";
 const Container = styled.div`
   color: ${(props) => props.theme.onPrimary};
   background-color: ${(props) => props.theme.primary};
+  height: ${(props) => (props.isLoading ? "100%" : "auto")};
 `;
 
 const Head = styled.div`
@@ -109,7 +110,7 @@ function Table(props) {
   }, [pageIndex, isReset]);
 
   return (
-    <Container>
+    <Container isLoading={loading}>
       {loading ? (
         <Spinner />
       ) : (
