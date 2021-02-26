@@ -19,7 +19,6 @@ const Container = styled.div`
   height: 100%;
   padding: 0.4rem 0.4rem;
   cursor: pointer;
-  min-height: 11rem;
 `;
 
 const StyledSpan = styled.span`

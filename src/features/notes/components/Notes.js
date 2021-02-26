@@ -86,7 +86,6 @@ const PopoverMainContainer = styled.div`
   border-radius: 8px;
   color: ${(props) => props.theme.onSecondary};
   padding: 1rem 0;
-  z-index: 1;
 `;
 
 const PopoverItem = styled.div`

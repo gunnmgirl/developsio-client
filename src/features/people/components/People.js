@@ -17,7 +17,6 @@ import { getStatuses } from "../../statuses/actions/statusesActions";
 import Table from "./Table";
 import Button from "../../../components/Button";
 import history from "../../../routing/history";
-import Spinner from "../../components/Spinner";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -157,7 +156,6 @@ const People = () => {
   const people = useSelector((state) => state.people.people);
   const totalCount = useSelector((state) => state.people.totalCount);
   const positions = useSelector((state) => state.positions.positions);
-  const loading = useSelector((state) => state.people.loading);
   const statuses = useSelector((state) => state.statuses.statuses);
   const [page, setPage] = React.useState(0);
   const [isReset, setIsReset] = React.useState(false);
@@ -395,72 +393,66 @@ const People = () => {
 
   return (
     <MainContainer data-cy="people-main-container">
-      {loading ? (
-        <Spinner />
-      ) : (
-        <>
-          <Wrapper>
-            <StyledTotalCount>{`${totalCount} Total`}</StyledTotalCount>
-            <Container>
-              <Popover
-                isOpen={isFilterOpen}
-                content={getFilterPopoverContent}
-                onClickOutside={() => setIsFilterOpen(false)}
-              >
-                <StyledFilter
-                  onClick={() => {
-                    if (!positions || !positions.length) {
-                      dispatch(getPositions());
-                    }
-                    setIsFilterOpen(!isFilterOpen);
-                  }}
-                >
-                  <StyledAlignCenter />
-                  <span>{!filter ? `All Positions` : `${filter}`}</span>
-                  <ChevronDown size="1rem" />
-                </StyledFilter>
-              </Popover>
-              <Popover
-                isOpen={isStatusesOpen}
-                content={getStatusesPopoverContent}
-                onClickOutside={() => setIsStatusesOpen(false)}
-              >
-                <StyledFilter
-                  onClick={() => {
-                    if (!status || !status.length) {
-                      dispatch(getStatuses());
-                    }
-                    setIsStatusesOpen(!isStatusesOpen);
-                  }}
-                >
-                  <StyledAlignCenter />
-                  <span>{!status ? `All Statuses` : `${status.name}`}</span>
-                  <ChevronDown size="1rem" />
-                </StyledFilter>
-              </Popover>
-              <Popover
-                isOpen={isOpen}
-                content={getPopoverContent}
-                onClickOutside={() => setIsOpen(false)}
-              >
-                <StyledSort onClick={() => setIsOpen(!isOpen)}>
-                  <StyledSpan>{`Sort by: `}</StyledSpan>
-                  <span>{order.name}</span>
-                  <ChevronDown size="1rem" />
-                </StyledSort>
-              </Popover>
-            </Container>
-          </Wrapper>
-          <Table
-            data={data}
-            columns={columns}
-            handleSetPage={handleSetPage}
-            totalCount={totalCount}
-            isReset={isReset}
-            setIsReset={setIsReset}
-          />
-        </>
-      )}
+      <Wrapper>
+        <StyledTotalCount>{`${totalCount} Total`}</StyledTotalCount>
+        <Container>
+          <Popover
+            isOpen={isFilterOpen}
+            content={getFilterPopoverContent}
+            onClickOutside={() => setIsFilterOpen(false)}
+          >
+            <StyledFilter
+              onClick={() => {
+                if (!positions || !positions.length) {
+                  dispatch(getPositions());
+                }
+                setIsFilterOpen(!isFilterOpen);
+              }}
+            >
+              <StyledAlignCenter />
+              <span>{!filter ? `All Positions` : `${filter}`}</span>
+              <ChevronDown size="1rem" />
+            </StyledFilter>
+          </Popover>
+          <Popover
+            isOpen={isStatusesOpen}
+            content={getStatusesPopoverContent}
+            onClickOutside={() => setIsStatusesOpen(false)}
+          >
+            <StyledFilter
+              onClick={() => {
+                if (!status || !status.length) {
+                  dispatch(getStatuses());
+                }
+                setIsStatusesOpen(!isStatusesOpen);
+              }}
+            >
+              <StyledAlignCenter />
+              <span>{!status ? `All Statuses` : `${status.name}`}</span>
+              <ChevronDown size="1rem" />
+            </StyledFilter>
+          </Popover>
+          <Popover
+            isOpen={isOpen}
+            content={getPopoverContent}
+            onClickOutside={() => setIsOpen(false)}
+          >
+            <StyledSort onClick={() => setIsOpen(!isOpen)}>
+              <StyledSpan>{`Sort by: `}</StyledSpan>
+              <span>{order.name}</span>
+              <ChevronDown size="1rem" />
+            </StyledSort>
+          </Popover>
+        </Container>
+      </Wrapper>
+      <Table
+        data={data}
+        columns={columns}
+        handleSetPage={handleSetPage}
+        totalCount={totalCount}
+        isReset={isReset}
+        setIsReset={setIsReset}
+      />
     </MainContainer>
   );
 };
