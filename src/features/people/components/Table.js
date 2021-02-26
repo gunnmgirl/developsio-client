@@ -70,7 +70,6 @@ function Table(props) {
     setIsReset,
   } = props;
   const limit = useSelector((state) => state.people.limit);
-  const loading = useSelector((state) => state.people.loading);
   const {
     getTableProps,
     getTableBodyProps,
@@ -110,59 +109,55 @@ function Table(props) {
 
   return (
     <Container>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <div {...getTableProps()}>
-          <Head>
-            {headerGroups.map((headerGroup) => (
-              <div {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <Header {...column.getHeaderProps()}>
-                    {column.render("Header")}
-                  </Header>
-                ))}
-              </div>
-            ))}
-          </Head>
-          <Body {...getTableBodyProps()}>
-            {trail.map((props, index) => {
-              const row = page[index];
-              prepareRow(row);
-              return (
-                <DataRow
-                  {...row.getRowProps()}
-                  style={{ ...row.getRowProps().style, ...props }}
-                >
-                  {row.cells.map((cell) => {
-                    return (
-                      <>
-                        <Data {...cell.getCellProps()}>
-                          {cell.render("Cell")}
-                        </Data>
-                      </>
-                    );
-                  })}
-                </DataRow>
-              );
-            })}
-          </Body>
-          {totalCount > 0 ? (
-            <Wrapper>
-              <IconWrapper
-                onClick={() => previousPage()}
-                disabled={!canPreviousPage}
+      <div {...getTableProps()}>
+        <Head>
+          {headerGroups.map((headerGroup) => (
+            <div {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <Header {...column.getHeaderProps()}>
+                  {column.render("Header")}
+                </Header>
+              ))}
+            </div>
+          ))}
+        </Head>
+        <Body {...getTableBodyProps()}>
+          {trail.map((props, index) => {
+            const row = page[index];
+            prepareRow(row);
+            return (
+              <DataRow
+                {...row.getRowProps()}
+                style={{ ...row.getRowProps().style, ...props }}
               >
-                <ArrowLeftCircle />
-              </IconWrapper>
-              <PageWrapper>{`${pageIndex + 1}`}</PageWrapper>
-              <IconWrapper onClick={() => nextPage()} disabled={!canNextPage}>
-                <ArrowRightCircle />
-              </IconWrapper>
-            </Wrapper>
-          ) : null}
-        </div>
-      )}
+                {row.cells.map((cell) => {
+                  return (
+                    <>
+                      <Data {...cell.getCellProps()}>
+                        {cell.render("Cell")}
+                      </Data>
+                    </>
+                  );
+                })}
+              </DataRow>
+            );
+          })}
+        </Body>
+        {totalCount > 0 ? (
+          <Wrapper>
+            <IconWrapper
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+            >
+              <ArrowLeftCircle />
+            </IconWrapper>
+            <PageWrapper>{`${pageIndex + 1}`}</PageWrapper>
+            <IconWrapper onClick={() => nextPage()} disabled={!canNextPage}>
+              <ArrowRightCircle />
+            </IconWrapper>
+          </Wrapper>
+        ) : null}
+      </div>
     </Container>
   );
 }
