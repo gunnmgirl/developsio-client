@@ -8,6 +8,8 @@ This web application will help:
 - advance products of Developish company by providing the top 1% of IT department people in Sweden,
 - improve and alleviate job application submission for people who are seeking great career opportunities,
 
+![Screenshot](docs/images/screenshot.png)
+
 ## Project architecture:
 
 - Framework: React
